@@ -1,0 +1,88 @@
+name: Validação e Testes do PR 
+
+on:
+  pull_request:
+    types: 
+      - opened
+      - synchronize
+      - reopened
+    
+    branches: [ "main"]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: react-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  test-pr:
+    name: Validar e Testar Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js (20)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar Dependências
+        run: npm ci
+
+      - name: Verificação de Tipagem
+        run: npm run typecheck --if-present
+
+      - name: Linter (ESLint)
+        run: npm run lint --if-present
+
+      - name: Executar Testes Unitários
+        id: run_tests
+        continue-on-error: true
+        run: npm test -- --watch=false --passWithNoTests
+
+      - name: Gerenciar Labels de Teste no PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const testStatus = '${{ steps.run_tests.outcome }}';
+            const issue_number = context.issue.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const { data: prInfo } = await github.rest.issues.get({
+              owner,
+              repo,
+              issue_number
+            });
+
+            
+            const oldLabels = prInfo.labels
+              .map(l => l.name)
+              .filter(name => name.startsWith('tests-'));
+
+            for (const labelName of oldLabels) {
+              await github.rest.issues.removeLabel({
+                owner,
+                repo,
+                issue_number,
+                name: labelName
+              });
+            }
+
+            const newLabel = (testStatus === 'success') ? 'tests-passed' : 'tests-failed';
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number,
+              labels: [newLabel]
+            });
+
+            if (testStatus !== 'success') {
+              core.setFailed('Os testes automatizados do Frontend falharam!');
+            }
