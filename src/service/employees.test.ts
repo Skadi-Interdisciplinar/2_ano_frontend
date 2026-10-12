@@ -22,8 +22,8 @@ describe('getFuncionarios', () => {
   })
 
   it('propaga a falha da requisição', async () => {
-    vi.mocked(api.get).mockRejectedValue(new Error('falha de rede'))
+    vi.mocked(api.get).mockRejectedValue(new Error('Network Error'))
 
-    await expect(getFuncionarios()).rejects.toThrow('falha de rede')
+    await expect(getFuncionarios()).rejects.toThrow('Network Error')
   })
 })
