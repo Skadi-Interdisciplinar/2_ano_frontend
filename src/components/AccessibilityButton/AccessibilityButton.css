@@ -1,0 +1,23 @@
+.accessibility-button {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  z-index: 4;
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.accessibility-button img {
+  display: block;
+  width: 44px;
+  height: 47px;
+}
+
+.accessibility-button:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+  border-radius: 50%;
+}

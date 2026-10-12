@@ -1,0 +1,62 @@
+.administrators-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: #ffffff;
+}
+
+.administrators-screen__header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 78px;
+  padding: 0 30px;
+  background: #0f2e4f;
+}
+
+.administrators-screen__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.administrators-screen__content {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 17px 56px 28px 16px;
+  background: #ffffff;
+  box-shadow: 0 0 9px rgba(0, 0, 0, 0.25);
+}
+
+.administrators-screen__toolbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.administrators-screen__content .staff-table {
+  position: relative;
+  z-index: 1;
+  margin-top: 27px;
+}
+
+.administrators-screen__content .pagination {
+  position: relative;
+  z-index: 1;
+}
+
+.administrators-screen__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
