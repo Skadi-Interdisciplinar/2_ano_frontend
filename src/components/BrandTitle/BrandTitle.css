@@ -1,0 +1,25 @@
+h1.brand-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+  color: #ffffff;
+  font-size: 35px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.brand-title__logo {
+  padding-left: 8.75px;
+  font-family: 'Cinzel Decorative', serif;
+  font-weight: 700;
+  letter-spacing: 8.75px;
+}
+
+.brand-title__divider,
+.brand-title__section {
+  font-family: Manrope, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+}

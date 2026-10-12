@@ -1,0 +1,54 @@
+.administrator-card {
+  display: grid;
+  grid-template-columns: var(--staff-columns);
+  align-items: center;
+  min-width: 980px;
+  height: 40px;
+  padding: 0 12px;
+  color: #000000;
+  font-family: Manrope, sans-serif;
+  font-size: 15px;
+}
+
+.administrator-card p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.administrator-card__actions {
+  position: relative;
+  width: 36px;
+  height: 17px;
+}
+
+.administrator-card__actions img {
+  display: block;
+  width: 36px;
+  height: 17px;
+}
+
+.administrator-card__actions button {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.administrator-card__actions button:first-of-type {
+  left: 0;
+}
+
+.administrator-card__actions button:last-of-type {
+  right: 0;
+}
+
+.administrator-card__actions button:focus-visible {
+  outline: 2px solid #2e8fea;
+  outline-offset: 2px;
+}

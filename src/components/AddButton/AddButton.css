@@ -1,0 +1,19 @@
+.add-button {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.add-button img {
+  display: block;
+  width: 46px;
+  height: 48px;
+}
+
+.add-button:focus-visible {
+  outline: 2px solid #2e8fea;
+  outline-offset: 2px;
+  border-radius: 50%;
+}
