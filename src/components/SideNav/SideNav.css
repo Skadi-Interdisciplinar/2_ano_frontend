@@ -48,8 +48,30 @@
   margin: 8px auto 0;
 }
 
+.side-nav__profile-btn {
+  display: block;
+  margin: 8px auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: transform 0.15s ease;
+}
+
+.side-nav__profile-btn:hover {
+  transform: scale(1.05);
+}
+
+.side-nav__profile-btn--current {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
 .side-nav__link:focus-visible,
-.side-nav__logout:focus-visible {
+.side-nav__logout:focus-visible,
+.side-nav__profile-btn:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 2px;
 }
+

@@ -22,4 +22,12 @@ describe('SideNav', () => {
 
     expect(onLogout).toHaveBeenCalledOnce()
   })
+
+  it('permite navegar para o perfil ao clicar no botão do perfil', () => {
+    const onNavigate = vi.fn()
+    render(<SideNav onNavigate={onNavigate} />)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Meu Perfil' }))
+    expect(onNavigate).toHaveBeenCalledWith('perfil')
+  })
 })
