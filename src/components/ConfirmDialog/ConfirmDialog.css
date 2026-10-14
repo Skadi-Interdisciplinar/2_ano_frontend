@@ -1,0 +1,107 @@
+.confirm-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 16px;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.confirm-dialog {
+  background-color: #ffffff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.15s ease-out;
+}
+
+.confirm-dialog__content {
+  padding: 28px 24px 20px;
+  text-align: center;
+}
+
+.confirm-dialog__title {
+  margin: 0;
+  color: #dc2626;
+  font-size: 19px;
+  font-weight: 700;
+  font-family: 'Manrope', -apple-system, sans-serif;
+}
+
+.confirm-dialog__message {
+  margin: 12px 0 0;
+  color: #475569;
+  font-size: 14.5px;
+  line-height: 1.5;
+  font-family: 'Manrope', -apple-system, sans-serif;
+}
+
+.confirm-dialog__divider {
+  width: 100%;
+  height: 1px;
+  background-color: #e2e8f0;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  height: 52px;
+}
+
+.confirm-dialog__btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  font-size: 15px;
+  font-family: 'Manrope', -apple-system, sans-serif;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-dialog__btn--cancel {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.confirm-dialog__btn--cancel:hover {
+  background-color: #f1f5f9;
+}
+
+.confirm-dialog__btn--confirm {
+  color: #0f2851;
+  font-weight: 700;
+}
+
+.confirm-dialog__btn--confirm:hover {
+  background-color: #f1f5f9;
+}
+
+.confirm-dialog__btn:focus-visible {
+  outline: 2px solid #0f2851;
+  outline-offset: -2px;
+}
+
+.confirm-dialog__actions-separator {
+  width: 1px;
+  height: 100%;
+  background-color: #e2e8f0;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: scale(0.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
