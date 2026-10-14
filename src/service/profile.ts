@@ -62,7 +62,7 @@ export const redefinirSenha = async (
     if (error && typeof error === 'object' && 'response' in error) {
       const err = error as { response?: { data?: { message?: string } } }
       if (err.response?.data?.message) {
-        throw new Error(err.response.data.message)
+        throw new Error(err.response.data.message, { cause: error })
       }
     }
     if (error instanceof Error) {

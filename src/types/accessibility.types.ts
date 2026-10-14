@@ -5,6 +5,13 @@ export interface IAccessibilityPreferences {
   sublinharLinks: boolean
 }
 
+export const PREFERENCIAS_PADRAO: IAccessibilityPreferences = {
+  altoContraste: false,
+  textoGrande: false,
+  fonteDislexia: false,
+  sublinharLinks: false,
+}
+
 export interface IVersionedStorage<T> {
   _versao: number
   dados: T

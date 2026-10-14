@@ -2,7 +2,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -30,24 +29,20 @@ export interface IAuthProviderProps {
 }
 
 export function AuthProvider({ children }: IAuthProviderProps) {
-  const [user, setUser] = useState<IAuthUser | null>(null)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-
-  // Inicializa sessão a partir do storage versionado
-  useEffect(() => {
+  // Inicialização preguiçosa sem disparar render em cascata via useEffect
+  const [user, setUser] = useState<IAuthUser | null>(() => {
     const savedToken = carregarComVersao<string | null>(TOKEN_KEY, SCHEMA_VERSAO, null)
     const savedUser = carregarComVersao<IAuthUser | null>(USER_KEY, SCHEMA_VERSAO, null)
+    return savedToken && savedUser ? savedUser : null
+  })
 
-    if (savedToken && savedUser) {
-      setUser(savedUser)
-      setIsAuthenticated(true)
-    } else {
-      setUser(null)
-      setIsAuthenticated(false)
-    }
-    setIsLoading(false)
-  }, [])
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+    const savedToken = carregarComVersao<string | null>(TOKEN_KEY, SCHEMA_VERSAO, null)
+    const savedUser = carregarComVersao<IAuthUser | null>(USER_KEY, SCHEMA_VERSAO, null)
+    return Boolean(savedToken && savedUser)
+  })
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const login = useCallback(async (credentials: ILoginCredentials): Promise<boolean> => {
     setIsLoading(true)
@@ -92,6 +87,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth(): IAuthContext {
   const context = useContext(AuthContext)
   if (!context) {
