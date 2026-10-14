@@ -16,26 +16,26 @@ export const postLogin = async (credentials: ILoginCredentials): Promise<ILoginR
   } catch (error: unknown) {
     if (axios.isAxiosError<{ message?: string }>(error)) {
       if (!error.response) {
-        throw new Error('Falha de conexão com o servidor. Verifique se a API está ativa.')
+        throw new Error('Falha de conexão com o servidor. Verifique se a API está ativa.', { cause: error })
       }
 
       if (error.response.status === 401) {
-        throw new Error('Usuário ou senha incorretos.')
+        throw new Error('Usuário ou senha incorretos.', { cause: error })
       }
 
       if (error.response.status === 403) {
-        throw new Error('Acesso negado. Seu perfil não possui permissão nesta área.')
+        throw new Error('Acesso negado. Seu perfil não possui permissão nesta área.', { cause: error })
       }
 
       const serverMessage = error.response.data?.message
-      throw new Error(serverMessage || 'Erro ao realizar login no servidor.')
+      throw new Error(serverMessage || 'Erro ao realizar login no servidor.', { cause: error })
     }
 
     if (error instanceof Error) {
       throw error
     }
 
-    throw new Error('Ocorreu um erro inesperado ao tentar realizar login.')
+    throw new Error('Ocorreu um erro inesperado ao tentar realizar login.', { cause: error })
   }
 }
 

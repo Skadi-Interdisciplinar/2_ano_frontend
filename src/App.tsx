@@ -12,6 +12,11 @@ const AdministratorsScreen = lazy(() =>
     default: m.AdministratorsScreen,
   })),
 )
+const ProfileScreen = lazy(() =>
+  import('./components/ProfileScreen/ProfileScreen.tsx').then((m) => ({
+    default: m.ProfileScreen,
+  })),
+)
 const EmployeeDetails = lazy(() => import('./pages/EmployeeDetails/index.tsx'))
 const NotFound = lazy(() => import('./pages/NotFound/index.tsx'))
 
@@ -46,6 +51,7 @@ export default function App() {
               <Route element={<PrivateRoute />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="/administradores" element={<AdministratorsScreen />} />
+                <Route path="/perfil" element={<ProfileScreen />} />
                 <Route path="/funcionarios/:id" element={<EmployeeDetails />} />
               </Route>
 

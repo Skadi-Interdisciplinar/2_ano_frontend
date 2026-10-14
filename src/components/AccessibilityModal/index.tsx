@@ -29,13 +29,13 @@ export function AccessibilityModal({ onClose }: IAccessibilityModalProps) {
   const modalRef = useRef<HTMLDivElement>(null)
   const previousActiveElementRef = useRef<HTMLElement | null>(null)
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (onClose) {
       onClose()
     } else {
       fecharModal()
     }
-  }
+  }, [onClose, fecharModal])
 
   // Gerenciamento de foco programático (WCAG 2.1 AA)
   useEffect(() => {
@@ -88,7 +88,7 @@ export function AccessibilityModal({ onClose }: IAccessibilityModalProps) {
         previousActiveElementRef.current.focus()
       }
     }
-  }, [isModalOpen])
+  }, [isModalOpen, handleClose])
 
   if (!isModalOpen) return null
 

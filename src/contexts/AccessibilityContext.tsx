@@ -8,22 +8,18 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import type {
-  AccessibilityAction,
-  IAccessibilityContext,
-  IAccessibilityPreferences,
+import {
+  PREFERENCIAS_PADRAO,
+  type AccessibilityAction,
+  type IAccessibilityContext,
+  type IAccessibilityPreferences,
 } from '../types/accessibility.types.ts'
 import { carregarComVersao, salvarComVersao } from '../utils/storage.utils.ts'
 
 const STORAGE_KEY = 'skadi_a11y_prefs'
 const SCHEMA_VERSAO = 1
 
-export const PREFERENCIAS_PADRAO: IAccessibilityPreferences = {
-  altoContraste: false,
-  textoGrande: false,
-  fonteDislexia: false,
-  sublinharLinks: false,
-}
+export { PREFERENCIAS_PADRAO }
 
 /**
  * useReducer com State e Action tipados em union types.
@@ -146,6 +142,7 @@ export function AccessibilityProvider({ children }: IAccessibilityProviderProps)
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAccessibility(): IAccessibilityContext {
   const context = useContext(AccessibilityContext)
   if (!context) {

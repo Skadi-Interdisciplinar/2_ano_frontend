@@ -1,4 +1,4 @@
-import api from "../config/axiosConnection"
+import api from '../config/axiosConnection.ts'
 
 
 
