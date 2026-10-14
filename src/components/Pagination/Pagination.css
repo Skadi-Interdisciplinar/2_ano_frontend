@@ -1,0 +1,43 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid #d5dbe3;
+  color: #0f2e4f;
+  font-family: Inter, sans-serif;
+  font-size: 10px;
+}
+
+.pagination p {
+  margin: 0;
+}
+
+.pagination button {
+  display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pagination img {
+  display: block;
+  width: 12px;
+  height: 8px;
+}
+
+.pagination__previous {
+  transform: rotate(90deg);
+}
+
+.pagination__next {
+  transform: rotate(-90deg);
+}
+
+.pagination button:focus-visible {
+  outline: 2px solid #2e8fea;
+  outline-offset: 2px;
+}

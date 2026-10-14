@@ -5,6 +5,7 @@ import { defineConfig } from 'vitest/config'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  envPrefix: ['VITE_', 'API_URL'],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -12,6 +13,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
     pool: 'threads',
     fileParallelism: false,
     isolate: false,

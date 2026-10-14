@@ -5,9 +5,13 @@ import { AccessibilityProvider } from './contexts/AccessibilityContext.tsx'
 import { PrivateRoute } from './components/PrivateRoute/index.tsx'
 import { LoadingSpinner } from './components/LoadingSpinner/index.tsx'
 
-// Requisito 18: React.lazy e Suspense por página
 const Login = lazy(() => import('./pages/Login/index.tsx'))
 const Home = lazy(() => import('./pages/Home/index.tsx'))
+const AdministratorsScreen = lazy(() =>
+  import('./components/AdministratorsScreen/AdministratorsScreen.tsx').then((m) => ({
+    default: m.AdministratorsScreen,
+  })),
+)
 const EmployeeDetails = lazy(() => import('./pages/EmployeeDetails/index.tsx'))
 const NotFound = lazy(() => import('./pages/NotFound/index.tsx'))
 
@@ -38,14 +42,14 @@ export default function App() {
               {/* Rota pública de Login */}
               <Route path="/login" element={<Login />} />
 
-              {/* Rotas Privadas (Requisito 23: autenticação via Context com PrivateRoute) */}
+              {/* Rotas Privadas */}
               <Route element={<PrivateRoute />}>
                 <Route path="/home" element={<Home />} />
-                {/* Rota parametrizada (Requisito 9: useParams tratado) */}
+                <Route path="/administradores" element={<AdministratorsScreen />} />
                 <Route path="/funcionarios/:id" element={<EmployeeDetails />} />
               </Route>
 
-              {/* Rota Curinga de Erro 404 (Requisito 10) */}
+              {/* Rota 404 */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
