@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { Administrator } from '../../data/administrators.ts'
-import { AccessibilityButton } from '../AccessibilityButton/AccessibilityButton.tsx'
-import { AddButton } from '../AddButton/AddButton.tsx'
-import { BrandTitle } from '../BrandTitle/BrandTitle.tsx'
-import { MenuButton } from '../MenuButton/MenuButton.tsx'
-import { Pagination } from '../Pagination/Pagination.tsx'
-import { SearchField } from '../SearchField/SearchField.tsx'
-import { SideNav } from '../SideNav/SideNav.tsx'
-import { StaffTable } from '../StaffTable/StaffTable.tsx'
+import { AccessibilityButton } from '../../components/AccessibilityButton/AccessibilityButton.tsx'
+import { AddButton } from '../../components/AddButton/AddButton.tsx'
+import { BrandTitle } from '../../components/BrandTitle/BrandTitle.tsx'
+import { MenuButton } from '../../components/MenuButton/MenuButton.tsx'
+import { Pagination } from '../../components/Pagination/Pagination.tsx'
+import { SearchField } from '../../components/SearchField/SearchField.tsx'
+import { SideNav } from '../../components/SideNav/SideNav.tsx'
+import { StaffTable } from '../../components/StaffTable/StaffTable.tsx'
 import './AdministratorsScreen.css'
 import { getFuncionarios } from '../../service/employees.ts'
 
@@ -41,7 +41,7 @@ export function AdministratorsScreen() {
         administrator.username,
         administrator.email,
         administrator.acesso,
-        administrator.cd,
+        administrator.cd.name,
       ]
         .join(' ')
         .toLowerCase()

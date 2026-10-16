@@ -8,7 +8,7 @@ import { LoadingSpinner } from './components/LoadingSpinner/index.tsx'
 const Login = lazy(() => import('./pages/Login/index.tsx'))
 const Home = lazy(() => import('./pages/Home/index.tsx'))
 const AdministratorsScreen = lazy(() =>
-  import('./components/AdministratorsScreen/AdministratorsScreen.tsx').then((m) => ({
+  import('./pages/AdministratorsScreen/AdministratorsScreen.tsx').then((m) => ({
     default: m.AdministratorsScreen,
   })),
 )
