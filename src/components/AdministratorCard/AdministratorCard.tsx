@@ -15,7 +15,7 @@ export function AdministratorCard({ administrator, onDelete }: AdministratorCard
       <p>{administrator.email}</p>
       <p>{administrator.senha}</p>
       <p>{administrator.acesso}</p>
-      <p>{administrator.cd}</p>
+      <p>{administrator.cd.name}</p>
       <p>{administrator.gestor}</p>
       <div className="administrator-card__actions">
         <img src={actions} alt="" />
