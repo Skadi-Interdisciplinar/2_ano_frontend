@@ -10,7 +10,7 @@ const administrator: Administrator = {
   email: 'ana.souza@institutojef.org.br',
   senha: '*******',
   acesso: 'Operador',
-  cd: 'Belterra',
+  cd: { id: 1, name: 'Belterra', cnpj: '00.000.000/0001-00' },
   gestor: 'Beatriz Hinsching',
 }
 
