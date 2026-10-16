@@ -1,3 +1,4 @@
+import axios from 'axios'
 import api from '../config/axiosConnection.ts'
 import {
   DEFAULT_USER_PROFILE,
@@ -59,16 +60,14 @@ export const redefinirSenha = async (
       message: response.data?.message ?? 'Senha redefinida com sucesso!',
     }
   } catch (error: unknown) {
-    if (error && typeof error === 'object' && 'response' in error) {
-      const err = error as { response?: { data?: { message?: string } } }
-      if (err.response?.data?.message) {
-        throw new Error(err.response.data.message, { cause: error })
+    if (axios.isAxiosError<{ message?: string }>(error)) {
+      const serverMessage = error.response?.data?.message
+      if (serverMessage) {
+        throw new Error(serverMessage, { cause: error })
       }
     }
-    if (error instanceof Error) {
-      if (error.message !== 'Network Error') {
-        throw error
-      }
+    if (error instanceof Error && error.message !== 'Network Error') {
+      throw error
     }
     // Fallback padrão amigável para ambiente de desenvolvimento
     return {

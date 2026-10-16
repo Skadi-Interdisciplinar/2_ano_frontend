@@ -1,3 +1,5 @@
+import type { Cd } from "./distributionCenter"
+
 export interface Administrator {
   id: string
   nome: string
@@ -5,7 +7,7 @@ export interface Administrator {
   email: string
   senha: string
   acesso: string
-  cd: string
+  cd: Cd
   gestor: string
 }
 

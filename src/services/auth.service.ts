@@ -1,5 +1,5 @@
 import axios from 'axios'
-import api from './api.ts'
+import api from '../config/axiosConnection.ts'
 import type { ILoginCredentials, ILoginResponse } from '../types/auth.types.ts'
 
 /**
