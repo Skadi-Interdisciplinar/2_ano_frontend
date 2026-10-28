@@ -4,12 +4,13 @@ import './StaffTable.css'
 
 type StaffTableProps = {
   administrators: Administrator[]
-  onDelete: (id: string) => void
+  onDelete: (id: string | number) => void
+  onEdit: (administrator: Administrator) => void
 }
 
-const columns = ['Nome', 'Username', 'E-mail', 'Senha', 'Acesso', 'CD', 'Gestor']
+const columns = ['Nome', 'Username', 'CPF', 'E-mail', 'Senha', 'Acesso', 'CD']
 
-export function StaffTable({ administrators, onDelete }: StaffTableProps) {
+export function StaffTable({ administrators, onDelete, onEdit }: StaffTableProps) {
   return (
     <div className="staff-table">
       <div className="staff-table__header" role="row">
@@ -28,6 +29,7 @@ export function StaffTable({ administrators, onDelete }: StaffTableProps) {
             key={administrator.id}
             administrator={administrator}
             onDelete={onDelete}
+            onEdit={onEdit}
           />
         ))}
       </div>

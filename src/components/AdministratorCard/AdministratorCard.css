@@ -2,8 +2,11 @@
   display: grid;
   grid-template-columns: var(--staff-columns);
   align-items: center;
+  flex: 0 0 40px;
   min-width: 980px;
   height: 40px;
+  min-height: 40px;
+  max-height: 40px;
   padding: 0 12px;
   color: #000000;
   font-family: Manrope, sans-serif;
@@ -51,4 +54,59 @@
 .administrator-card__actions button:focus-visible {
   outline: 2px solid #2e8fea;
   outline-offset: 2px;
+}
+
+.administrator-card__cds {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 8px;
+  min-width: 0;
+  height: 40px;
+  min-height: 0;
+}
+
+.administrator-card__cds-toggle {
+  flex: 0 0 auto;
+  height: 22px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 15px;
+  background: #0f2e4f;
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.administrator-card__cds-toggle:focus-visible {
+  outline: 2px solid #2e8fea;
+  outline-offset: 2px;
+}
+
+.administrator-card__cds-list {
+  position: fixed;
+  z-index: 20;
+  min-width: 220px;
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 0 9px rgba(0, 0, 0, 0.25);
+}
+
+.administrator-card__cds-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 14px;
+  color: #0f2e4f;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+}
+
+.administrator-card__cds-list li span:last-child {
+  color: #8aa0b5;
+  font-size: 12px;
 }
