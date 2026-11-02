@@ -1,22 +1,28 @@
+import { forwardRef } from 'react'
 import menu from '../../assets/admin/menu.svg'
 import './MenuButton.css'
 
-type MenuButtonProps = {
+export type MenuButtonProps = {
   expanded: boolean
   onClick: () => void
 }
 
-export function MenuButton({ expanded, onClick }: MenuButtonProps) {
+export const MenuButton = forwardRef<HTMLButtonElement, MenuButtonProps>(function MenuButton(
+  { expanded, onClick },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type="button"
       className="menu-button"
-      aria-label="Menu"
+      aria-label={expanded ? 'Fechar menu de navegação' : 'Abrir menu de navegação'}
       aria-expanded={expanded}
       aria-controls="menu-lateral"
+      aria-haspopup="true"
       onClick={onClick}
     >
       <img src={menu} alt="" width={40} height={23} />
     </button>
   )
-}
+})

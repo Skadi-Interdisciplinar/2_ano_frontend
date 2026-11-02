@@ -16,7 +16,7 @@ export default function EmployeeDetails() {
         </p>
         <button
           type="button"
-          onClick={() => navigate('/home')}
+          onClick={() => navigate('/dashboards')}
           style={{
             marginTop: '1.6rem',
             padding: '1rem 2rem',
@@ -35,10 +35,14 @@ export default function EmployeeDetails() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f8fafc', padding: '3.2rem' }}>
+      <a href="#main-content" className="skip-link">
+        Pular para o conteúdo principal
+      </a>
+
       <header style={{ display: 'flex', alignItems: 'center', gap: '1.6rem', marginBottom: '2.4rem' }}>
         <button
           type="button"
-          onClick={() => navigate('/home')}
+          onClick={() => navigate('/dashboards')}
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -62,6 +66,8 @@ export default function EmployeeDetails() {
       </header>
 
       <main
+        id="main-content"
+        tabIndex={-1}
         style={{
           backgroundColor: '#ffffff',
           borderRadius: '1.6rem',
@@ -77,6 +83,10 @@ export default function EmployeeDetails() {
           <strong>Status:</strong> Ativo no sistema
         </p>
       </main>
+
+      <footer style={{ marginTop: '2.4rem', color: '#64748b', fontSize: '1.25rem' }}>
+        <p>© 2026 Skadi · Detalhes do Colaborador</p>
+      </footer>
 
       <AccessibilityButton />
     </div>

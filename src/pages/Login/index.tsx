@@ -60,7 +60,7 @@ export default function Login() {
     try {
       const success = await login(credentials)
       if (success) {
-        navigate('/home', { replace: true })
+        navigate('/dashboards', { replace: true })
       }
     } catch (err: unknown) {
       const message =
@@ -73,6 +73,11 @@ export default function Login() {
 
   return (
     <div className="login-page-container">
+      {/* WCAG 2.1 AA: Skip to main content link */}
+      <a href="#main-content" className="skip-link">
+        Pular para o formulário de login
+      </a>
+
       {/* Botão Voltar */}
       <button
         type="button"
@@ -106,7 +111,7 @@ export default function Login() {
 
         {/* LADO DIREITO: Cartão de login */}
         <div className="login-card-side">
-          <main className="login-card">
+          <main className="login-card" id="main-content" tabIndex={-1}>
             <header className="login-card-header">
               <h1 className="login-brand-title">S K A D I</h1>
               <p className="login-brand-subtitle">Área restrita</p>
@@ -231,6 +236,11 @@ export default function Login() {
 
       {/* Botão de Acessibilidade */}
       <AccessibilityButton />
+
+      {/* Landmark: Rodapé / Footer */}
+      <footer className="login-footer sr-only">
+        <p>© 2026 Skadi · Área Restrita · Todos os direitos reservados.</p>
+      </footer>
     </div>
   )
 }

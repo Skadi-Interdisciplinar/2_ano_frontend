@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AccessibilityButton } from '../AccessibilityButton/AccessibilityButton.tsx'
 import { BrandTitle } from '../BrandTitle/BrandTitle.tsx'
@@ -25,6 +25,9 @@ export function ProfileScreen() {
   const { user, logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [currentView, setCurrentView] = useState<'perfil' | 'redefinir-senha'>('perfil')
+
+  const menuButtonRef = useRef<HTMLButtonElement | null>(null)
+  const lastActiveTriggerRef = useRef<HTMLElement | null>(null)
 
   // Inicializa com os dados do usuário autenticado do AuthContext / localStorage versionado
   const [profile, setProfile] = useState<IUserProfile>(() => {
@@ -87,11 +90,20 @@ export function ProfileScreen() {
       }
     }
 
-    loadData()
+    void loadData()
     return () => {
       isMounted = false
     }
   }, [])
+
+  const handleToggleMenu = () => {
+    setMenuOpen((prev) => !prev)
+  }
+
+  const handleCloseMenu = () => {
+    setMenuOpen(false)
+    menuButtonRef.current?.focus()
+  }
 
   const handleToggleDarkMode = async (enabled: boolean) => {
     setPreferences((prev) => ({ ...prev, modoEscuro: enabled }))
@@ -103,6 +115,18 @@ export function ProfileScreen() {
       localStorage.setItem('skadi_dark_mode', 'false')
     }
     await atualizarPreferencias({ modoEscuro: enabled })
+  }
+
+  const handleOpenResetPassword = () => {
+    lastActiveTriggerRef.current = document.activeElement as HTMLElement
+    setCurrentView('redefinir-senha')
+  }
+
+  const handleBackToProfile = () => {
+    setCurrentView('perfil')
+    setTimeout(() => {
+      lastActiveTriggerRef.current?.focus()
+    }, 50)
   }
 
   const handleStartResetPassword = (payload: IRedefinirSenhaPayload) => {
@@ -121,6 +145,7 @@ export function ProfileScreen() {
       setCurrentView('perfil')
       setToastMessage({ text: res.message, type: 'success' })
       setTimeout(() => setToastMessage(null), 5000)
+      lastActiveTriggerRef.current?.focus()
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : 'Falha ao redefinir senha.'
       setToastMessage({ text: msg, type: 'error' })
@@ -131,10 +156,13 @@ export function ProfileScreen() {
   }
 
   const handleNavigate = (section: string) => {
-    if (section === 'administradores') {
+    if (section === 'dashboards') {
+      navigate('/dashboards')
+    } else if (section === 'administradores') {
       navigate('/administradores')
     } else if (section === 'perfil') {
       setCurrentView('perfil')
+      handleCloseMenu()
     }
   }
 
@@ -144,22 +172,35 @@ export function ProfileScreen() {
   }
 
   return (
-    <main className="profile-screen">
+    <div className="profile-screen">
+      {/* WCAG 2.1 AA: Skip to main content link */}
+      <a href="#main-content" className="skip-link">
+        Pular para o conteúdo principal
+      </a>
+
+      {/* Landmark: Banner / Header */}
       <header className="profile-screen__header">
-        <MenuButton expanded={menuOpen} onClick={() => setMenuOpen((open) => !open)} />
+        <MenuButton
+          ref={menuButtonRef}
+          expanded={menuOpen}
+          onClick={handleToggleMenu}
+        />
         <BrandTitle section="Perfil" />
       </header>
 
       <div className="profile-screen__body">
+        {/* Landmark: Menu lateral */}
         {menuOpen ? (
           <SideNav
             currentSection="perfil"
             onNavigate={handleNavigate}
             onLogout={handleLogout}
+            onClose={handleCloseMenu}
           />
         ) : null}
 
-        <section className="profile-screen__content">
+        {/* Landmark: Conteúdo principal */}
+        <main className="profile-screen__content" id="main-content" tabIndex={-1}>
           {toastMessage && (
             <div
               className={`profile-screen__toast profile-screen__toast--${toastMessage.type}`}
@@ -175,12 +216,12 @@ export function ProfileScreen() {
               <ProfileCard
                 profile={activeProfile}
                 preferences={preferences}
-                onOpenResetPassword={() => setCurrentView('redefinir-senha')}
+                onOpenResetPassword={handleOpenResetPassword}
                 onToggleDarkMode={handleToggleDarkMode}
               />
             ) : (
               <ResetPasswordModal
-                onBack={() => setCurrentView('perfil')}
+                onBack={handleBackToProfile}
                 onSubmit={handleStartResetPassword}
                 isLoading={isSubmitting}
               />
@@ -188,8 +229,13 @@ export function ProfileScreen() {
           </div>
 
           <AccessibilityButton />
-        </section>
+        </main>
       </div>
+
+      {/* Landmark: Rodapé / Footer */}
+      <footer className="profile-screen__footer">
+        <p>© 2026 Skadi · Meu Perfil · Todos os direitos reservados.</p>
+      </footer>
 
       <ConfirmDialog
         isOpen={showConfirmDialog}
@@ -197,6 +243,6 @@ export function ProfileScreen() {
         onConfirm={handleConfirmResetPassword}
         isLoading={isSubmitting}
       />
-    </main>
+    </div>
   )
 }

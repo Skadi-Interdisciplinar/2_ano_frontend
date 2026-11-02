@@ -7,7 +7,7 @@ import { PrivateRoute } from './components/PrivateRoute/index.tsx'
 import { LoadingSpinner } from './components/LoadingSpinner/index.tsx'
 
 const Login = lazy(() => import('./pages/Login/index.tsx'))
-const Home = lazy(() => import('./pages/Home/index.tsx'))
+const Dashboards = lazy(() => import('./pages/Dashboards/index.tsx'))
 const AdministratorsScreen = lazy(() =>
   import('./components/AdministratorsScreen/AdministratorsScreen.tsx').then((m) => ({
     default: m.AdministratorsScreen,
@@ -50,15 +50,17 @@ export default function App() {
           >
             <Routes>
               {/* Redirecionamento da raiz */}
-              <Route path="/" element={<Navigate to="/perfil" replace />} />
+              <Route path="/" element={<Navigate to="/dashboards" replace />} />
 
               {/* Rotas Públicas */}
               <Route path="/login" element={<Login />} />
-              <Route path="/perfil" element={<ProfileScreen />} />
 
-              {/* Rotas Privadas */}
+              {/* Rotas Privadas (protegidas por PrivateRoute via AuthContext) */}
               <Route element={<PrivateRoute />}>
-                <Route path="/home" element={<Home />} />
+                <Route path="/dashboards" element={<Dashboards />} />
+                {/* Redirecionamento da rota legada /home para /dashboards */}
+                <Route path="/home" element={<Navigate to="/dashboards" replace />} />
+                <Route path="/perfil" element={<ProfileScreen />} />
                 <Route path="/administradores" element={<AdministratorsScreen />} />
                 <Route path="/funcionarios/:id" element={<EmployeeDetails />} />
               </Route>

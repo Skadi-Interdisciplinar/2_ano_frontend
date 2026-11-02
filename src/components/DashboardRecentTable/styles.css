@@ -1,0 +1,280 @@
+.recent-tickets-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 2.2rem;
+  box-shadow: 0 4px 12px rgba(15, 46, 79, 0.04);
+}
+
+.recent-tickets-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1.6rem;
+}
+
+.recent-tickets-card__title {
+  margin: 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #0F2E4F;
+  font-family: 'Manrope', -apple-system, sans-serif;
+}
+
+.recent-tickets-card__subtitle {
+  margin: 0.4rem 0 0;
+  font-size: 1.25rem;
+  color: #64748b;
+}
+
+.recent-tickets-card__see-all {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0F2E4F;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: #f1f5f9;
+  transition: background-color 0.15s ease;
+}
+
+.recent-tickets-card__see-all:hover {
+  background-color: #e2e8f0;
+}
+
+.recent-tickets-card__see-all:focus-visible {
+  outline: 2px solid #0F2E4F;
+}
+
+.recent-tickets-card__empty {
+  padding: 3.5rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 1.3rem;
+}
+
+.recent-tickets-table-wrapper {
+  overflow-x: auto;
+}
+
+.recent-tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 1.35rem;
+}
+
+.recent-tickets-table th {
+  padding: 1.2rem 1.4rem;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.recent-tickets-table td {
+  padding: 1.4rem;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+.recent-tickets-table tr:last-child td {
+  border-bottom: none;
+}
+
+.recent-tickets-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-muted {
+  color: #64748b;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-primary {
+  color: #0F2E4F;
+}
+
+/* ==========================================================================
+   Badges
+   ========================================================================== */
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.status-badge--registrado {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge--em-atendimento {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.status-badge--atendido {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+/* Action button */
+.recent-tickets-action-btn {
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #0F2E4F;
+  text-decoration: none;
+  background-color: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.15s ease;
+}
+
+.recent-tickets-action-btn:hover {
+  background-color: #e2e8f0;
+}
+
+.recent-tickets-action-btn:focus-visible {
+  outline: 2px solid #0F2E4F;
+}
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+html.dark-mode .recent-tickets-card {
+  background-color: #132238;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .recent-tickets-card__title {
+  color: #f8fafc;
+}
+
+html.dark-mode .recent-tickets-card__subtitle {
+  color: #94a3b8;
+}
+
+html.dark-mode .recent-tickets-card__see-all {
+  background-color: #1e293b;
+  color: #93c5fd;
+}
+
+html.dark-mode .recent-tickets-card__see-all:hover {
+  background-color: #334155;
+}
+
+html.dark-mode .recent-tickets-table th {
+  color: #94a3b8;
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode .recent-tickets-table td {
+  color: #e2e8f0;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+html.dark-mode .recent-tickets-table tr:hover td {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+html.dark-mode .text-primary {
+  color: #60a5fa;
+}
+
+html.dark-mode .status-badge--registrado {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fde68a;
+}
+
+html.dark-mode .status-badge--em-atendimento {
+  background-color: rgba(2, 132, 199, 0.2);
+  color: #bae6fd;
+}
+
+html.dark-mode .status-badge--atendido {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #a7f3d0;
+}
+
+html.dark-mode .recent-tickets-action-btn {
+  background-color: #1e293b;
+  color: #93c5fd;
+}
+
+html.dark-mode .recent-tickets-action-btn:hover {
+  background-color: #334155;
+}
+
+/* ==========================================================================
+   Tabs / Abas (Padrão WAI-ARIA)
+   ========================================================================== */
+.recent-tickets-tablist {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.8rem;
+}
+
+.recent-tickets-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.recent-tickets-tab:hover {
+  color: #0F2E4F;
+  background-color: #f1f5f9;
+}
+
+.recent-tickets-tab--active {
+  background-color: #0F2E4F;
+  color: #ffffff !important;
+}
+
+.recent-tickets-tab:focus-visible {
+  outline: 2px solid #0F2E4F;
+  outline-offset: 2px;
+}
+
+html.dark-mode .recent-tickets-tablist {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode .recent-tickets-tab {
+  color: #94a3b8;
+}
+
+html.dark-mode .recent-tickets-tab:hover {
+  color: #f8fafc;
+  background-color: #1e293b;
+}
+
+html.dark-mode .recent-tickets-tab--active {
+  background-color: #2563eb;
+  color: #ffffff !important;
+}

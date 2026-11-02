@@ -78,3 +78,18 @@
   box-shadow: none;
 }
 
+
+.administrators-screen__footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  color: #64748b;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.dark-mode .administrators-screen__footer {
+  background-color: #0b1a2e;
+  color: #94a3b8;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
