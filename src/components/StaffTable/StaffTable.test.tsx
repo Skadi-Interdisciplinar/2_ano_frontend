@@ -7,18 +7,22 @@ const administrator: Administrator = {
   id: 'ana-souza',
   nome: 'Ana',
   username: 'Ana.souza',
+  cpf: '10987654321',
   email: 'ana.souza@institutojef.org.br',
-  senha: '*******',
-  acesso: 'Operador',
-  cd: { id: 1, name: 'Belterra', cnpj: '00.000.000/0001-00' },
-  gestor: 'Beatriz Hinsching',
+  nivelAcesso: 'ADMIN',
+  cdGestor: null,
+  cd: [{ id: 1, name: 'CD Osasco', cnpj: '12345678901234' }],
+  codGestor: null,
 }
 
 describe('StaffTable', () => {
   it('lista um card para cada administrador', () => {
     const onDelete = vi.fn()
-    render(<StaffTable administrators={[administrator]} onDelete={onDelete} />)
+    render(<StaffTable administrators={[administrator]} onDelete={onDelete} onEdit={vi.fn()} />)
 
+    expect(screen.queryByRole('columnheader', { name: 'CPF' })).toBeNull()
+    expect(screen.queryByRole('columnheader', { name: 'Senha' })).toBeNull()
+    expect(screen.getByRole('columnheader', { name: 'Gestor' })).toBeTruthy()
     expect(screen.getByRole('article', { name: 'Ana' })).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Excluir Ana' }))
