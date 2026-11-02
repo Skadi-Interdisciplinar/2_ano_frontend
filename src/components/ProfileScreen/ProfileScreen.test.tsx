@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 import { ProfileScreen } from './ProfileScreen.tsx'
+import { AuthProvider } from '../../contexts/AuthContext.tsx'
 
 vi.mock('../../service/profile.ts', () => ({
   getPerfil: vi.fn().mockResolvedValue({
@@ -26,9 +27,11 @@ vi.mock('../../service/profile.ts', () => ({
 describe('ProfileScreen', () => {
   it('renderiza o cabeçalho com a seção Perfil e o card de perfil', async () => {
     render(
-      <MemoryRouter>
-        <ProfileScreen />
-      </MemoryRouter>,
+      <AuthProvider>
+        <MemoryRouter>
+          <ProfileScreen />
+        </MemoryRouter>
+      </AuthProvider>,
     )
 
     expect(screen.getByRole('heading', { name: 'SKADI|Perfil' })).toBeTruthy()
@@ -39,9 +42,11 @@ describe('ProfileScreen', () => {
 
   it('alterna para a tela de redefinição de senha ao clicar no botão', async () => {
     render(
-      <MemoryRouter>
-        <ProfileScreen />
-      </MemoryRouter>,
+      <AuthProvider>
+        <MemoryRouter>
+          <ProfileScreen />
+        </MemoryRouter>
+      </AuthProvider>,
     )
 
     await waitFor(() => {
@@ -56,9 +61,11 @@ describe('ProfileScreen', () => {
 
   it('exibe o diálogo de confirmação após preenchimento válido e permite confirmar', async () => {
     render(
-      <MemoryRouter>
-        <ProfileScreen />
-      </MemoryRouter>,
+      <AuthProvider>
+        <MemoryRouter>
+          <ProfileScreen />
+        </MemoryRouter>
+      </AuthProvider>,
     )
 
     await waitFor(() => {

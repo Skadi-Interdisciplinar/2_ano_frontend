@@ -55,6 +55,9 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       // Persiste com schema versionado (_versao: 1)
       salvarComVersao(TOKEN_KEY, response.token, SCHEMA_VERSAO)
       salvarComVersao(USER_KEY, response.user, SCHEMA_VERSAO)
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('token', response.token)
+      }
       return true
     } catch (error) {
       setUser(null)
@@ -69,6 +72,9 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     void postLogout()
     removerItem(TOKEN_KEY)
     removerItem(USER_KEY)
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('token')
+    }
     setUser(null)
     setIsAuthenticated(false)
   }, [])

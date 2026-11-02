@@ -60,3 +60,21 @@
   background: rgba(0, 0, 0, 0.4);
   cursor: pointer;
 }
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+.dark-mode .administrators-screen {
+  background: #091422;
+}
+
+.dark-mode .administrators-screen__header {
+  background: #0b1a2e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .administrators-screen__content {
+  background: #091422;
+  box-shadow: none;
+}
+

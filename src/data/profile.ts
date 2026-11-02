@@ -35,7 +35,7 @@ export const DEFAULT_USER_PROFILE: IUserProfile = {
   usuario: 'pedhen.8002',
   unidade: 'JBS Belterra',
   email: 'pedro.henrique@skadi.com',
-  avatar: 'P',
+  avatar: undefined,
 }
 
 export const DEFAULT_PROFILE_PREFERENCES: IProfilePreferences = {

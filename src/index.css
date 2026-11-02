@@ -43,6 +43,16 @@ body {
   background: #ffffff;
 }
 
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode,
+html.dark-mode body {
+  background-color: #091422;
+  color: #f8fafc;
+}
+
 #root {
   width: 100%;
   max-width: none;

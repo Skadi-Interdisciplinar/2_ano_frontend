@@ -206,3 +206,88 @@
     height: 1px;
   }
 }
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+.dark-mode .profile-card {
+  background-color: #132235;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .profile-card__avatar {
+  background-color: #1e3550;
+  color: #ffffff;
+  border: 2px solid rgba(56, 189, 248, 0.25);
+}
+
+.dark-mode .profile-card__name {
+  color: #ffffff;
+}
+
+.dark-mode .profile-card__role {
+  color: #94a3b8;
+}
+
+.dark-mode .profile-card__username-row {
+  color: #94a3b8;
+}
+
+.dark-mode .profile-card__username {
+  color: #cbd5e1;
+}
+
+.dark-mode .profile-card__user-icon {
+  color: #38bdf8;
+}
+
+.dark-mode .profile-card__reset-button {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+.dark-mode .profile-card__reset-button:hover {
+  background-color: rgba(56, 189, 248, 0.1);
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.dark-mode .profile-card__chevron {
+  color: #94a3b8;
+}
+
+.dark-mode .profile-card__reset-button:hover .profile-card__chevron {
+  color: #38bdf8;
+}
+
+.dark-mode .profile-card__divider {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .profile-card__preferences-title {
+  color: #ffffff;
+}
+
+.dark-mode .profile-card__preference-item {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .profile-card__pref-label {
+  color: #f1f5f9;
+}
+
+.dark-mode .profile-card__pref-value {
+  color: #38bdf8;
+}
+
+.dark-mode .profile-card__switch {
+  background-color: #334155;
+}
+
+.dark-mode .profile-card__switch--active {
+  background-color: #0284c7;
+}
+

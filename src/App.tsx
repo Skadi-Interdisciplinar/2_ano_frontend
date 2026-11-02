@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { AccessibilityProvider } from './contexts/AccessibilityContext.tsx'
@@ -21,6 +21,12 @@ const EmployeeDetails = lazy(() => import('./pages/EmployeeDetails/index.tsx'))
 const NotFound = lazy(() => import('./pages/NotFound/index.tsx'))
 
 export default function App() {
+  useEffect(() => {
+    if (localStorage.getItem('skadi_dark_mode') === 'true') {
+      document.documentElement.classList.add('dark-mode')
+    }
+  }, [])
+
   return (
     <BrowserRouter>
       <AccessibilityProvider>
@@ -42,16 +48,16 @@ export default function App() {
           >
             <Routes>
               {/* Redirecionamento da raiz */}
-              <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="/" element={<Navigate to="/perfil" replace />} />
 
-              {/* Rota pública de Login */}
+              {/* Rotas Públicas */}
               <Route path="/login" element={<Login />} />
+              <Route path="/perfil" element={<ProfileScreen />} />
 
               {/* Rotas Privadas */}
               <Route element={<PrivateRoute />}>
                 <Route path="/home" element={<Home />} />
                 <Route path="/administradores" element={<AdministratorsScreen />} />
-                <Route path="/perfil" element={<ProfileScreen />} />
                 <Route path="/funcionarios/:id" element={<EmployeeDetails />} />
               </Route>
 

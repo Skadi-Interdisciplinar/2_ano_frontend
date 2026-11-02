@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AccessibilityButton } from '../AccessibilityButton/AccessibilityButton.tsx'
 import { BrandTitle } from '../BrandTitle/BrandTitle.tsx'
@@ -15,27 +15,72 @@ import {
   type IRedefinirSenhaPayload,
 } from '../../data/profile.ts'
 import { getPerfil, atualizarPreferencias, redefinirSenha } from '../../service/profile.ts'
+import { useAuth } from '../../contexts/AuthContext.tsx'
+import { carregarComVersao } from '../../utils/storage.utils.ts'
+import type { IAuthUser } from '../../types/auth.types.ts'
 import './ProfileScreen.css'
 
 export function ProfileScreen() {
   const navigate = useNavigate()
+  const { user, logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(false)
   const [currentView, setCurrentView] = useState<'perfil' | 'redefinir-senha'>('perfil')
-  const [profile, setProfile] = useState<IUserProfile>(DEFAULT_USER_PROFILE)
-  const [preferences, setPreferences] = useState<IProfilePreferences>(DEFAULT_PROFILE_PREFERENCES)
+
+  // Inicializa com os dados do usuário autenticado do AuthContext / localStorage versionado
+  const [profile, setProfile] = useState<IUserProfile>(() => {
+    const savedUser = user ?? carregarComVersao<IAuthUser | null>('skadi_user', 1, null)
+    if (savedUser) {
+      return {
+        id: savedUser.id || DEFAULT_USER_PROFILE.id,
+        nome: savedUser.nome || DEFAULT_USER_PROFILE.nome,
+        cargo: savedUser.cargo || DEFAULT_USER_PROFILE.cargo,
+        usuario: savedUser.usuario || DEFAULT_USER_PROFILE.usuario,
+        email: savedUser.email || DEFAULT_USER_PROFILE.email,
+        unidade: DEFAULT_USER_PROFILE.unidade,
+      }
+    }
+    return DEFAULT_USER_PROFILE
+  })
+
+  const [preferences, setPreferences] = useState<IProfilePreferences>(() => {
+    const isDark =
+      typeof localStorage !== 'undefined'
+        ? localStorage.getItem('skadi_dark_mode') === 'true'
+        : false
+    return {
+      ...DEFAULT_PROFILE_PREFERENCES,
+      modoEscuro: isDark,
+    }
+  })
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const [pendingPayload, setPendingPayload] = useState<IRedefinirSenhaPayload | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null)
 
+  // Combina o perfil carregado com o usuário autenticado atual sem cascateamento de renders
+  const activeProfile = useMemo<IUserProfile>(() => {
+    return {
+      ...profile,
+      id: user?.id || profile.id,
+      nome: user?.nome || profile.nome,
+      cargo: user?.cargo || profile.cargo,
+      usuario: user?.usuario || profile.usuario,
+      email: user?.email || profile.email,
+    }
+  }, [profile, user])
+
+  // Busca dados adicionais do perfil caso disponíveis no backend
   useEffect(() => {
     let isMounted = true
 
     async function loadData() {
       try {
         const userProfile = await getPerfil()
-        if (isMounted) {
-          setProfile(userProfile)
+        if (isMounted && userProfile) {
+          setProfile((prev) => ({
+            ...prev,
+            ...userProfile,
+          }))
         }
       } catch (err) {
         console.error('Falha ao carregar perfil:', err)
@@ -52,8 +97,10 @@ export function ProfileScreen() {
     setPreferences((prev) => ({ ...prev, modoEscuro: enabled }))
     if (enabled) {
       document.documentElement.classList.add('dark-mode')
+      localStorage.setItem('skadi_dark_mode', 'true')
     } else {
       document.documentElement.classList.remove('dark-mode')
+      localStorage.setItem('skadi_dark_mode', 'false')
     }
     await atualizarPreferencias({ modoEscuro: enabled })
   }
@@ -92,7 +139,7 @@ export function ProfileScreen() {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
+    logout()
     navigate('/login')
   }
 
@@ -126,7 +173,7 @@ export function ProfileScreen() {
           <div className="profile-screen__view-container">
             {currentView === 'perfil' ? (
               <ProfileCard
-                profile={profile}
+                profile={activeProfile}
                 preferences={preferences}
                 onOpenResetPassword={() => setCurrentView('redefinir-senha')}
                 onToggleDarkMode={handleToggleDarkMode}

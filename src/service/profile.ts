@@ -6,15 +6,36 @@ import {
   type IRedefinirSenhaPayload,
   type IUserProfile,
 } from '../data/profile.ts'
+import { carregarComVersao } from '../utils/storage.utils.ts'
+import type { IAuthUser } from '../types/auth.types.ts'
 
 export const getPerfil = async (): Promise<IUserProfile> => {
+  const savedUser = carregarComVersao<IAuthUser | null>('skadi_user', 1, null)
+  const localFallback: IUserProfile = savedUser
+    ? {
+        id: savedUser.id || DEFAULT_USER_PROFILE.id,
+        nome: savedUser.nome || DEFAULT_USER_PROFILE.nome,
+        cargo: savedUser.cargo || DEFAULT_USER_PROFILE.cargo,
+        usuario: savedUser.usuario || DEFAULT_USER_PROFILE.usuario,
+        email: savedUser.email || DEFAULT_USER_PROFILE.email,
+        unidade: DEFAULT_USER_PROFILE.unidade,
+      }
+    : DEFAULT_USER_PROFILE
+
   try {
     const response = await api.get('perfil')
-    return response.data ?? DEFAULT_USER_PROFILE
+    if (
+      response.data &&
+      typeof response.data === 'object' &&
+      'nome' in response.data &&
+      typeof (response.data as { nome: unknown }).nome === 'string'
+    ) {
+      return response.data as IUserProfile
+    }
+    return localFallback
   } catch (error) {
-    // Retorna os dados padrão caso o endpoint ainda não esteja deployado
     console.warn('Endpoint /perfil não disponível ou falhou, utilizando perfil local:', error)
-    return DEFAULT_USER_PROFILE
+    return localFallback
   }
 }
 
@@ -23,7 +44,13 @@ export const atualizarPreferencias = async (
 ): Promise<IProfilePreferences> => {
   try {
     const response = await api.patch('perfil/preferencias', preferencias)
-    return response.data
+    if (response.data && typeof response.data === 'object') {
+      return response.data as IProfilePreferences
+    }
+    return {
+      ...DEFAULT_PROFILE_PREFERENCES,
+      ...preferencias,
+    }
   } catch (error) {
     console.warn('Falha ao sincronizar preferências no backend, aplicando localmente:', error)
     return {
@@ -70,7 +97,7 @@ export const redefinirSenha = async (
         throw error
       }
     }
-    // Fallback padrão amigável para ambiente de desenvolvimento
+    // Fallback amigável caso o backend não esteja ativo
     return {
       success: true,
       message: 'Senha redefinida com sucesso!',
