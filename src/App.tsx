@@ -8,16 +8,8 @@ import { LoadingSpinner } from './components/LoadingSpinner/index.tsx'
 
 const Login = lazy(() => import('./pages/Login/index.tsx'))
 const Dashboards = lazy(() => import('./pages/Dashboards/index.tsx'))
-const AdministratorsScreen = lazy(() =>
-  import('./components/AdministratorsScreen/AdministratorsScreen.tsx').then((m) => ({
-    default: m.AdministratorsScreen,
-  })),
-)
-const ProfileScreen = lazy(() =>
-  import('./components/ProfileScreen/ProfileScreen.tsx').then((m) => ({
-    default: m.ProfileScreen,
-  })),
-)
+const AdministratorsScreen = lazy(() => import('./pages/Administrators/index.tsx'))
+const ProfileScreen = lazy(() => import('./pages/Profile/index.tsx'))
 const EmployeeDetails = lazy(() => import('./pages/EmployeeDetails/index.tsx'))
 const NotFound = lazy(() => import('./pages/NotFound/index.tsx'))
 

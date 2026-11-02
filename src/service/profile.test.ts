@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import api from '../config/axiosConnection.ts'
+import api from '../services/api.ts'
 import { DEFAULT_USER_PROFILE, DEFAULT_PROFILE_PREFERENCES } from '../data/profile.ts'
 import { getPerfil, atualizarPreferencias, redefinirSenha } from './profile.ts'
 
-vi.mock('../config/axiosConnection.ts', () => ({
+vi.mock('../services/api.ts', () => ({
   default: {
     get: vi.fn(),
     patch: vi.fn(),

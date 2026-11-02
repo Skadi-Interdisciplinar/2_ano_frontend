@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import api from '../config/axiosConnection.ts'
+import api from '../services/api.ts'
 import { getFuncionarios } from './employees.ts'
 
-vi.mock('../config/axiosConnection.ts', () => ({
+vi.mock('../services/api.ts', () => ({
   default: {
     get: vi.fn(),
   },
