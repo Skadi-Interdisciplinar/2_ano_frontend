@@ -70,26 +70,3 @@
   cursor: pointer;
 }
 
-.support-screen__created {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  gap: 8px;
-  max-width: 720px;
-  margin-top: 28px;
-  padding: 24px;
-  border: 1px solid #ececec;
-  border-radius: 16px;
-  color: #111111;
-  font-family: Inter, sans-serif;
-}
-
-.support-screen__created h2 {
-  margin: 0 0 8px;
-  color: #0f2e4f;
-  font-size: 22px;
-}
-
-.support-screen__created p {
-  margin: 0;
-}
