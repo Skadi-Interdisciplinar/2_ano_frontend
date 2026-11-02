@@ -14,7 +14,8 @@ export interface IAuthUser {
 
 export interface ILoginResponse {
   token: string
-  user: IAuthUser
+  expirationTime: number
+  validUntil: string
 }
 
 export interface IAuthContext {
