@@ -9,11 +9,10 @@ const administrator: Administrator = {
   username: 'enzo.admin',
   cpf: '12345678901',
   email: 'enzo.admin@email.com',
-  senha: 'senha',
   nivelAcesso: 'ADMIN',
   cdGestor: null,
   cd: [{ id: 1, name: 'CD Osasco', cnpj: '12345678901234' }],
-  codGestor: 10,
+  codGestor: null,
 }
 
 const availableCds = [
@@ -38,8 +37,64 @@ describe('AdministratorFormModal', () => {
     expect(screen.getByDisplayValue('12345678901')).toBeTruthy()
     expect(screen.getByDisplayValue('enzo.admin@email.com')).toBeTruthy()
 
-    const acesso = screen.getByDisplayValue('ADMIN') as HTMLInputElement
+    const acesso = screen.getByDisplayValue('Admin') as HTMLInputElement
     expect(acesso.disabled).toBe(true)
+    const senha = screen.getByLabelText('Senha') as HTMLInputElement
+    expect(senha.disabled).toBe(true)
+    expect(senha.value).toBe('*******')
+    expect(screen.getByDisplayValue('não possui')).toBeTruthy()
+  })
+
+  it('atualiza sem senha e mantém os centros já vinculados', () => {
+    const onSubmit = vi.fn()
+    render(
+      <AdministratorFormModal
+        mode="edit"
+        administrator={administrator}
+        availableCds={availableCds}
+        onClose={vi.fn()}
+        onSubmit={onSubmit}
+      />,
+    )
+
+    fireEvent.change(screen.getByLabelText('E-mail'), { target: { value: 'novo@email.com' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar' }))
+
+    expect(onSubmit).toHaveBeenCalledWith(
+      {
+        id: 10,
+        nome: 'Enzo',
+        username: 'enzo.admin',
+        cpf: '12345678901',
+        email: 'novo@email.com',
+        nivelAcesso: 'ADMIN',
+        cdGestor: null,
+        cd: administrator.cd,
+        codGestor: null,
+      },
+    )
+  })
+
+  it('recusa CPF que não tem 11 dígitos', () => {
+    const onSubmit = vi.fn()
+    render(
+      <AdministratorFormModal
+        mode="create"
+        availableCds={availableCds}
+        onClose={vi.fn()}
+        onSubmit={onSubmit}
+      />,
+    )
+
+    fireEvent.change(screen.getByLabelText('Nome'), { target: { value: 'Enzo' } })
+    fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'enzo.admin' } })
+    fireEvent.change(screen.getByLabelText('CPF'), { target: { value: '123' } })
+    fireEvent.change(screen.getByLabelText('E-mail'), { target: { value: 'enzo.admin@email.com' } })
+    fireEvent.change(screen.getByLabelText('Senha'), { target: { value: 'senha' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar' }))
+
+    expect(onSubmit).not.toHaveBeenCalled()
+    expect(screen.getByText('O CPF deve ter 11 caracteres.')).toBeTruthy()
   })
 
   it('envia o administrador com a role ADMIN e os CDs escolhidos', () => {
@@ -61,18 +116,20 @@ describe('AdministratorFormModal', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Centros de distribuição' }))
     fireEvent.click(screen.getByRole('checkbox', { name: 'CD Osasco' }))
     fireEvent.click(screen.getByRole('checkbox', { name: 'CD Belterra' }))
-    fireEvent.click(screen.getByRole('button', { name: 'Salvar' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Confirmar' }))
 
-    expect(onSubmit).toHaveBeenCalledWith({
-      nome: 'Enzo',
-      username: 'enzo.admin',
-      cpf: '12345678901',
-      email: 'enzo.admin@email.com',
-      senha: 'senha',
-      nivelAcesso: 'ADMIN',
-      cdGestor: null,
-      cd: availableCds,
-      codGestor: null,
-    })
+    expect(onSubmit).toHaveBeenCalledWith(
+      {
+        nome: 'Enzo',
+        username: 'enzo.admin',
+        cpf: '12345678901',
+        email: 'enzo.admin@email.com',
+        senha: 'senha',
+        nivelAcesso: 'ADMIN',
+        cdGestor: null,
+        cd: availableCds,
+        codGestor: null,
+      },
+    )
   })
 })

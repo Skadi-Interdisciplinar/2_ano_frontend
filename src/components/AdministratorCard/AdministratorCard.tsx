@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import actions from '../../assets/admin/row-actions.svg'
-import type { Administrator } from '../../data/administrators.ts'
+import { rotuloAcesso, rotuloGestor, type Administrator } from '../../data/administrators.ts'
 import './AdministratorCard.css'
 
 type AdministratorCardProps = {
@@ -49,21 +49,19 @@ export function AdministratorCard({ administrator, onDelete, onEdit }: Administr
     <article className="administrator-card" aria-label={administrator.nome}>
       <p>{administrator.nome}</p>
       <p>{administrator.username}</p>
-      <p>{administrator.cpf}</p>
       <p>{administrator.email}</p>
-      <p>{administrator.senha}</p>
-      <p>{administrator.nivelAcesso}</p>
+      <p>{rotuloAcesso(administrator.nivelAcesso)}</p>
       <div className="administrator-card__cds" ref={cdsRef}>
-        <p>{firstCd?.name ?? ''}</p>
-        {cds.length > 1 ? (
+        {cds.length > 0 ? (
           <button
             type="button"
-            className="administrator-card__cds-toggle"
+            className="administrator-card__cds-trigger"
             aria-expanded={cdsOpen}
             aria-label={`Centros de distribuição de ${administrator.nome}`}
             onClick={() => setCdsOpen((open) => !open)}
           >
-            +{cds.length - 1}
+            <span>{firstCd?.name ?? ''}</span>
+            <span className="administrator-card__cds-chevron" aria-hidden="true" />
           </button>
         ) : null}
         {cdsOpen
@@ -74,16 +72,14 @@ export function AdministratorCard({ administrator, onDelete, onEdit }: Administr
                 style={{ top: listPosition.top, left: listPosition.left }}
               >
                 {cds.map((cd) => (
-                  <li key={cd.id}>
-                    <span>{cd.name}</span>
-                    <span>{cd.cnpj}</span>
-                  </li>
+                  <li key={cd.id}>{cd.name}</li>
                 ))}
               </ul>,
               document.body,
             )
           : null}
       </div>
+      <p>{rotuloGestor(administrator)}</p>
       <div className="administrator-card__actions">
         <img src={actions} alt="" />
         <button type="button" aria-label={`Editar ${administrator.nome}`} onClick={() => onEdit(administrator)} />

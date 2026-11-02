@@ -8,7 +8,7 @@ type StaffTableProps = {
   onEdit: (administrator: Administrator) => void
 }
 
-const columns = ['Nome', 'Username', 'CPF', 'E-mail', 'Senha', 'Acesso', 'CD']
+const columns = ['Nome', 'Username', 'E-mail', 'Acesso', 'CD', 'Gestor']
 
 export function StaffTable({ administrators, onDelete, onEdit }: StaffTableProps) {
   return (

@@ -1,12 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
-import {
-  administradoresDeTeste,
-  type Administrator,
-  type AdministratorInput,
-} from '../../data/administrators.ts'
+import type { Administrator, AdministratorInput, AdministratorUpdate } from '../../data/administrators.ts'
 import type { Cd } from '../../data/distributionCenter.ts'
 import { AccessibilityButton } from '../../components/AccessibilityButton/AccessibilityButton.tsx'
 import { AddButton } from '../../components/AddButton/AddButton.tsx'
+import { AdministratorDeleteDialog } from '../../components/AdministratorDeleteDialog/AdministratorDeleteDialog.tsx'
 import { AdministratorFormModal } from '../../components/AdministratorFormModal/AdministratorFormModal.tsx'
 import { BrandTitle } from '../../components/BrandTitle/BrandTitle.tsx'
 import { MenuButton } from '../../components/MenuButton/MenuButton.tsx'
@@ -16,45 +13,49 @@ import { SideNav } from '../../components/SideNav/SideNav.tsx'
 import { StaffTable } from '../../components/StaffTable/StaffTable.tsx'
 import {
   createAdministrador,
+  deleteAdministrador,
+  getCds,
   getFuncionarios,
+  mensagemDaApi,
   updateAdministrador,
 } from '../../service/employees.ts'
 import './AdministratorsScreen.css'
 
-function collectCds(administrators: Administrator[]): Cd[] {
-  const cds = new Map<number, Cd>()
-  for (const administrator of administrators) {
-    for (const cd of administrator.cd ?? []) {
-      cds.set(cd.id, cd)
-    }
-  }
-  return [...cds.values()]
-}
-
 export function AdministratorsScreen() {
   const [menuOpen, setMenuOpen] = useState(true)
   const [query, setQuery] = useState('')
-  const [administrators, setAdministrators] = useState<Administrator[]>(administradoresDeTeste)
+  const [administrators, setAdministrators] = useState<Administrator[]>([])
+  const [catalog, setCatalog] = useState<Cd[]>([])
   const [modalMode, setModalMode] = useState<'create' | 'edit' | null>(null)
   const [editing, setEditing] = useState<Administrator | null>(null)
+  const [pendingDelete, setPendingDelete] = useState<Administrator | null>(null)
   const [isSaving, setIsSaving] = useState(false)
+  const [pageError, setPageError] = useState<string | null>(null)
+  const [formError, setFormError] = useState<string | null>(null)
 
   async function loadAdministrators() {
     const response = await getFuncionarios()
-    if (Array.isArray(response) && response.length > 0) {
-      setAdministrators(response)
-    }
+    setAdministrators(Array.isArray(response) ? response : [])
   }
 
   useEffect(() => {
-    async function fetchFuncionarios() {
+    async function load() {
       try {
         await loadAdministrators()
       } catch (error) {
-        console.error('Erro ao buscar funcionários:', error)
+        setAdministrators([])
+        setPageError(mensagemDaApi(error, 'Não foi possível carregar os administradores.'))
+      }
+
+      try {
+        const cds = await getCds()
+        setCatalog(Array.isArray(cds) ? cds : [])
+      } catch (error) {
+        setCatalog([])
+        setPageError((current) => current ?? mensagemDaApi(error, 'Não foi possível carregar os centros de distribuição.'))
       }
     }
-    fetchFuncionarios()
+    void load()
   }, [])
 
   const visibleCards = useMemo(() => {
@@ -69,6 +70,7 @@ export function AdministratorsScreen() {
         administrator.cpf,
         administrator.email,
         administrator.nivelAcesso,
+        administrator.gestorNome ?? '',
         ...(administrator.cd ?? []).map((cd) => cd.name),
       ]
         .join(' ')
@@ -77,21 +79,37 @@ export function AdministratorsScreen() {
     )
   }, [administrators, query])
 
-  const availableCds = useMemo(() => collectCds(administrators), [administrators])
-
-  async function handleSubmit(payload: AdministratorInput) {
+  async function handleSubmit(payload: AdministratorInput | AdministratorUpdate) {
     setIsSaving(true)
+    setFormError(null)
     try {
-      if (modalMode === 'edit' && editing) {
-        await updateAdministrador(editing.id, payload)
+      if (modalMode === 'edit' && 'id' in payload) {
+        await updateAdministrador(payload)
       } else {
-        await createAdministrador(payload)
+        await createAdministrador(payload as AdministratorInput)
       }
       await loadAdministrators()
       setModalMode(null)
       setEditing(null)
+      setPageError(null)
     } catch (error) {
-      console.error('Erro ao salvar administrador:', error)
+      setFormError(mensagemDaApi(error, 'Não foi possível salvar o administrador.'))
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  async function confirmDelete() {
+    if (!pendingDelete) return
+
+    setIsSaving(true)
+    setPageError(null)
+    try {
+      await deleteAdministrador(pendingDelete.id)
+      await loadAdministrators()
+      setPendingDelete(null)
+    } catch (error) {
+      setPageError(mensagemDaApi(error, 'Não foi possível excluir o administrador.'))
     } finally {
       setIsSaving(false)
     }
@@ -111,17 +129,25 @@ export function AdministratorsScreen() {
             <AddButton
               onClick={() => {
                 setEditing(null)
+                setFormError(null)
                 setModalMode('create')
               }}
             />
           </div>
+          {pageError ? (
+            <p className="administrators-screen__error" role="alert">
+              {pageError}
+            </p>
+          ) : null}
           <StaffTable
             administrators={visibleCards}
-            onDelete={(id) =>
-              setAdministrators((current) => current.filter((administrator) => administrator.id !== id))
-            }
+            onDelete={(id) => {
+              const administrator = administrators.find((item) => item.id === id)
+              if (administrator) setPendingDelete(administrator)
+            }}
             onEdit={(administrator) => {
               setEditing(administrator)
+              setFormError(null)
               setModalMode('edit')
             }}
           />
@@ -142,13 +168,26 @@ export function AdministratorsScreen() {
           key={editing ? String(editing.id) : 'create'}
           mode={modalMode}
           administrator={editing}
-          availableCds={availableCds}
+          availableCds={catalog}
           isLoading={isSaving}
+          serverError={formError}
           onClose={() => {
             setModalMode(null)
             setEditing(null)
+            setFormError(null)
           }}
-          onSubmit={handleSubmit}
+          onSubmit={(payload) => {
+            void handleSubmit(payload)
+          }}
+        />
+      ) : null}
+      {pendingDelete ? (
+        <AdministratorDeleteDialog
+          isLoading={isSaving}
+          onCancel={() => setPendingDelete(null)}
+          onConfirm={() => {
+            void confirmDelete()
+          }}
         />
       ) : null}
     </main>

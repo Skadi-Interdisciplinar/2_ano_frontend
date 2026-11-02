@@ -9,7 +9,6 @@ const administrator: Administrator = {
   username: 'Ana.souza',
   cpf: '10987654321',
   email: 'ana.souza@institutojef.org.br',
-  senha: '*******',
   nivelAcesso: 'ADMIN',
   cdGestor: null,
   cd: [{ id: 1, name: 'CD Osasco', cnpj: '12345678901234' }],
@@ -21,8 +20,9 @@ describe('StaffTable', () => {
     const onDelete = vi.fn()
     render(<StaffTable administrators={[administrator]} onDelete={onDelete} onEdit={vi.fn()} />)
 
-    expect(screen.getByRole('columnheader', { name: 'CPF' })).toBeTruthy()
-    expect(screen.queryByRole('columnheader', { name: 'Gestor' })).toBeNull()
+    expect(screen.queryByRole('columnheader', { name: 'CPF' })).toBeNull()
+    expect(screen.queryByRole('columnheader', { name: 'Senha' })).toBeNull()
+    expect(screen.getByRole('columnheader', { name: 'Gestor' })).toBeTruthy()
     expect(screen.getByRole('article', { name: 'Ana' })).toBeTruthy()
 
     fireEvent.click(screen.getByRole('button', { name: 'Excluir Ana' }))

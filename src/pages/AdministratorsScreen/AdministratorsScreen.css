@@ -41,6 +41,15 @@
   gap: 16px;
 }
 
+.administrators-screen__error {
+  position: relative;
+  z-index: 1;
+  margin: 16px 0 0;
+  color: #e63946;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+}
+
 .administrators-screen__content .staff-table {
   position: relative;
   z-index: 1;

@@ -9,14 +9,13 @@ const administrator: Administrator = {
   username: 'Guh.munhoz',
   cpf: '12345678901',
   email: 'gustavo.munhoz@institutojef.org.br',
-  senha: '*******',
   nivelAcesso: 'ADMIN',
   cdGestor: null,
   cd: [
     { id: 1, name: 'CD Osasco', cnpj: '12345678901234' },
     { id: 2, name: 'CD Belterra', cnpj: '00.000.000/0001-00' },
   ],
-  codGestor: 10,
+  codGestor: null,
 }
 
 describe('AdministratorCard', () => {
@@ -24,6 +23,7 @@ describe('AdministratorCard', () => {
     render(<AdministratorCard administrator={administrator} onDelete={vi.fn()} onEdit={vi.fn()} />)
 
     expect(screen.getByRole('article', { name: 'Gustavo' })).toBeTruthy()
+    expect(screen.getByText('não possui')).toBeTruthy()
     expect(screen.getByText('CD Osasco')).toBeTruthy()
     expect(screen.queryByText('CD Belterra')).toBeNull()
 

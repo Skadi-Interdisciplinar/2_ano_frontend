@@ -1,15 +1,20 @@
 import { useEffect, useId, useRef, useState, type FormEvent } from 'react'
-import type { Administrator, AdministratorInput } from '../../data/administrators.ts'
+import { rotuloAcesso, rotuloGestor, type Administrator, type AdministratorInput, type AdministratorUpdate } from '../../data/administrators.ts'
 import type { Cd } from '../../data/distributionCenter.ts'
 import './AdministratorFormModal.css'
+
+function cpfDigits(value: string) {
+  return value.replace(/\D/g, '')
+}
 
 export type AdministratorFormModalProps = {
   mode: 'create' | 'edit'
   administrator?: Administrator | null
   availableCds: Cd[]
   onClose: () => void
-  onSubmit: (payload: AdministratorInput) => void
+  onSubmit: (payload: AdministratorInput | AdministratorUpdate) => void
   isLoading?: boolean
+  serverError?: string | null
 }
 
 export function AdministratorFormModal({
@@ -19,6 +24,7 @@ export function AdministratorFormModal({
   onClose,
   onSubmit,
   isLoading = false,
+  serverError = null,
 }: AdministratorFormModalProps) {
   const titleId = useId()
   const cdsLabelId = useId()
@@ -28,15 +34,14 @@ export function AdministratorFormModal({
   const [username, setUsername] = useState(administrator?.username ?? '')
   const [cpf, setCpf] = useState(administrator?.cpf ?? '')
   const [email, setEmail] = useState(administrator?.email ?? '')
-  const [senha, setSenha] = useState(administrator?.senha ?? '')
+  const [senha, setSenha] = useState('')
   const [selectedIds, setSelectedIds] = useState<string[]>(
     (administrator?.cd ?? []).map((cd) => String(cd.id)),
   )
   const [cdsOpen, setCdsOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const selectedCds = availableCds.filter((cd) => selectedIds.includes(String(cd.id)))
-  const cdsSummary =
-    selectedCds.length > 0 ? selectedCds.map((cd) => cd.name).join(', ') : 'Selecione os centros'
+  const cdsSummary = selectedCds.length > 0 ? selectedCds[0].name : 'Selecione os centros'
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -68,28 +73,57 @@ export function AdministratorFormModal({
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
 
+    const cpfNumeros = cpfDigits(cpf)
     const payload = {
       nome: nome.trim(),
       username: username.trim(),
-      cpf: cpf.trim(),
+      cpf: cpfNumeros,
       email: email.trim(),
-      senha: senha.trim(),
     }
 
-    if (!payload.nome || !payload.username || !payload.cpf || !payload.email || !payload.senha) {
+    if (!payload.nome || !payload.username || !payload.cpf || !payload.email) {
       setErrorMessage('Preencha todos os campos para continuar.')
       return
     }
 
+    if (payload.cpf.length !== 11) {
+      setErrorMessage('O CPF deve ter 11 caracteres.')
+      return
+    }
+
     const cd = availableCds.filter((item) => selectedIds.includes(String(item.id)))
+
+    if (mode === 'edit') {
+      if (administrator == null) return
+      setErrorMessage(null)
+      const update: AdministratorUpdate = {
+        id: administrator.id,
+        ...payload,
+        nivelAcesso: 'ADMIN',
+        cdGestor: null,
+        cd: cd.length > 0 ? cd : (administrator.cd ?? []),
+        codGestor: null,
+      }
+      onSubmit(update)
+      return
+    }
+
+    const senhaInformada = senha.trim()
+    if (!senhaInformada) {
+      setErrorMessage('Preencha todos os campos para continuar.')
+      return
+    }
+
     setErrorMessage(null)
-    onSubmit({
+    const create: AdministratorInput = {
       ...payload,
+      senha: senhaInformada,
       nivelAcesso: 'ADMIN',
       cdGestor: null,
       cd,
       codGestor: null,
-    })
+    }
+    onSubmit(create)
   }
 
   return (
@@ -101,89 +135,109 @@ export function AdministratorFormModal({
         aria-labelledby={titleId}
       >
         <header className="administrator-form-modal__header">
-          <h2 id={titleId}>{mode === 'create' ? 'Adicionar administrador' : 'Atualizar administrador'}</h2>
           <button type="button" className="administrator-form-modal__close" aria-label="Fechar" onClick={onClose}>
             ×
           </button>
+          <h2 id={titleId} className="administrator-form-modal__title">
+            {mode === 'create' ? 'Adicionar administrador' : 'Atualizar administrador'}
+          </h2>
         </header>
         <form className="administrator-form-modal__form" onSubmit={handleSubmit}>
-          <label>
-            Nome
-            <input value={nome} onChange={(event) => setNome(event.target.value)} />
-          </label>
-          <label>
-            Username
-            <input value={username} onChange={(event) => setUsername(event.target.value)} />
-          </label>
-          <label>
-            CPF
-            <input value={cpf} onChange={(event) => setCpf(event.target.value)} inputMode="numeric" />
-          </label>
-          <label>
-            E-mail
-            <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
-          </label>
-          <label>
-            Senha
-            <input type="password" value={senha} onChange={(event) => setSenha(event.target.value)} />
-          </label>
-          <label>
-            Acesso
-            <input value="ADMIN" disabled readOnly />
-          </label>
-          <div className="administrator-form-modal__cds" ref={cdsRef}>
-            <span id={cdsLabelId} className="administrator-form-modal__cd-label">
-              Centros de distribuição
-            </span>
-            <button
-              type="button"
-              className="administrator-form-modal__cd-trigger"
-              aria-labelledby={cdsLabelId}
-              aria-expanded={cdsOpen}
-              aria-controls={cdsListId}
-              disabled={availableCds.length === 0}
-              onClick={() => setCdsOpen((open) => !open)}
-            >
-              <span className={selectedCds.length === 0 ? 'administrator-form-modal__cd-placeholder' : undefined}>
-                {availableCds.length === 0 ? 'Nenhum centro de distribuição disponível.' : cdsSummary}
-              </span>
-              <span className="administrator-form-modal__cd-chevron" aria-hidden="true" />
-            </button>
-            {cdsOpen ? (
-              <ul id={cdsListId} className="administrator-form-modal__cd-menu">
-                {availableCds.map((cd) => {
-                  const id = String(cd.id)
-                  const checked = selectedIds.includes(id)
-                  return (
-                    <li key={cd.id}>
-                      <label className="administrator-form-modal__cd-option">
-                        <input
-                          type="checkbox"
-                          name="cd"
-                          value={id}
-                          checked={checked}
-                          onChange={() =>
-                            setSelectedIds((current) =>
-                              checked ? current.filter((item) => item !== id) : [...current, id],
-                            )
-                          }
-                        />
-                        <span>{cd.name}</span>
-                      </label>
-                    </li>
-                  )
-                })}
-              </ul>
+          <div className="administrator-form-modal__panel">
+            <div className="administrator-form-modal__grid">
+              <label>
+                Nome
+                <input value={nome} onChange={(event) => setNome(event.target.value)} />
+              </label>
+              <label>
+                Username
+                <input value={username} onChange={(event) => setUsername(event.target.value)} />
+              </label>
+              <label>
+                E-mail
+                <input type="email" value={email} onChange={(event) => setEmail(event.target.value)} />
+              </label>
+              <label>
+                Senha
+                <input
+                  type="password"
+                  value={mode === 'edit' ? '*******' : senha}
+                  onChange={(event) => setSenha(event.target.value)}
+                  disabled={mode === 'edit'}
+                  readOnly={mode === 'edit'}
+                />
+              </label>
+              <label>
+                Acesso
+                <input value={rotuloAcesso('ADMIN')} disabled readOnly />
+              </label>
+              <div className="administrator-form-modal__cds" ref={cdsRef}>
+                <span id={cdsLabelId} className="administrator-form-modal__cd-label">
+                  CD
+                </span>
+                <button
+                  type="button"
+                  className="administrator-form-modal__cd-trigger"
+                  aria-label="Centros de distribuição"
+                  aria-expanded={cdsOpen}
+                  aria-controls={cdsListId}
+                  disabled={availableCds.length === 0}
+                  onClick={() => setCdsOpen((open) => !open)}
+                >
+                  <span className={selectedCds.length === 0 ? 'administrator-form-modal__cd-placeholder' : undefined}>
+                    {availableCds.length === 0 ? 'Nenhum centro disponível' : cdsSummary}
+                  </span>
+                  <span className="administrator-form-modal__cd-chevron" aria-hidden="true" />
+                </button>
+                {cdsOpen ? (
+                  <ul id={cdsListId} className="administrator-form-modal__cd-menu">
+                    {availableCds.map((cd) => {
+                      const id = String(cd.id)
+                      const checked = selectedIds.includes(id)
+                      return (
+                        <li key={cd.id}>
+                          <label className="administrator-form-modal__cd-option">
+                            <input
+                              type="checkbox"
+                              name="cd"
+                              value={id}
+                              checked={checked}
+                              onChange={() =>
+                                setSelectedIds((current) =>
+                                  checked ? current.filter((item) => item !== id) : [...current, id],
+                                )
+                              }
+                            />
+                            <span>{cd.name}</span>
+                          </label>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                ) : null}
+              </div>
+              <label className="administrator-form-modal__full">
+                Gestor
+                <input value={rotuloGestor(administrator)} disabled readOnly />
+              </label>
+              <label className="administrator-form-modal__full">
+                CPF
+                <input value={cpf} onChange={(event) => setCpf(event.target.value)} inputMode="numeric" />
+              </label>
+            </div>
+            {errorMessage || serverError ? (
+              <p className="administrator-form-modal__error" role="alert">
+                {errorMessage || serverError}
+              </p>
             ) : null}
-          </div>
-          {errorMessage ? <p className="administrator-form-modal__error">{errorMessage}</p> : null}
-          <div className="administrator-form-modal__actions">
-            <button type="button" className="administrator-form-modal__cancel" onClick={onClose}>
-              Cancelar
-            </button>
-            <button type="submit" className="administrator-form-modal__confirm" disabled={isLoading}>
-              {isLoading ? 'Salvando...' : 'Salvar'}
-            </button>
+            <div className="administrator-form-modal__actions">
+              <button type="button" className="administrator-form-modal__cancel" onClick={onClose}>
+                Cancelar
+              </button>
+              <button type="submit" className="administrator-form-modal__confirm" disabled={isLoading}>
+                {isLoading ? 'Confirmando...' : 'Confirmar'}
+              </button>
+            </div>
           </div>
         </form>
       </div>
