@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { AccessibilityProvider } from './contexts/AccessibilityContext.tsx'
+import { AccessibilityModal } from './components/AccessibilityModal/index.tsx'
 import { PrivateRoute } from './components/PrivateRoute/index.tsx'
 import { LoadingSpinner } from './components/LoadingSpinner/index.tsx'
 
@@ -31,6 +32,7 @@ export default function App() {
     <BrowserRouter>
       <AccessibilityProvider>
         <AuthProvider>
+          <AccessibilityModal />
           <Suspense
             fallback={
               <div

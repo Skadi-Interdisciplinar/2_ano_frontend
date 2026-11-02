@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { ArrowBack as ArrowBackIcon } from '@mui/icons-material'
 import { AccessibilityButton } from '../../components/AccessibilityButton/index.tsx'
-import { AccessibilityModal } from '../../components/AccessibilityModal/index.tsx'
 
 export default function EmployeeDetails() {
   const navigate = useNavigate()
@@ -80,7 +79,6 @@ export default function EmployeeDetails() {
       </main>
 
       <AccessibilityButton />
-      <AccessibilityModal />
     </div>
   )
 }

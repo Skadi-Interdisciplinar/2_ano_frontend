@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react'
+import { useEffect, useState, type FormEvent, type ChangeEvent } from 'react'
 import type { IRedefinirSenhaPayload } from '../../data/profile.ts'
 import './ResetPasswordModal.css'
 
@@ -22,6 +22,12 @@ export function ResetPasswordModal({ onBack, onSubmit, isLoading = false }: Rese
   })
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
+  // Foco programático inicial no primeiro campo ao carregar
+  useEffect(() => {
+    const firstInput = document.getElementById('field-senha-atual') as HTMLInputElement | null
+    firstInput?.focus()
+  }, [])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -84,7 +90,7 @@ export function ResetPasswordModal({ onBack, onSubmit, isLoading = false }: Rese
           <h3 className="reset-password-view__card-title">Redefina sua senha</h3>
 
           {errorMessage && (
-            <div className="reset-password-view__alert" role="alert">
+            <div id="reset-error-msg" className="reset-password-view__alert" role="alert">
               {errorMessage}
             </div>
           )}
@@ -102,6 +108,9 @@ export function ResetPasswordModal({ onBack, onSubmit, isLoading = false }: Rese
                 value={formData.senhaAtual}
                 onChange={handleChange}
                 className="reset-password-view__input"
+                aria-required="true"
+                aria-invalid={Boolean(errorMessage)}
+                aria-describedby={errorMessage ? 'reset-error-msg' : undefined}
                 required
               />
               <button
@@ -128,6 +137,9 @@ export function ResetPasswordModal({ onBack, onSubmit, isLoading = false }: Rese
                 value={formData.novaSenha}
                 onChange={handleChange}
                 className="reset-password-view__input"
+                aria-required="true"
+                aria-invalid={Boolean(errorMessage)}
+                aria-describedby={errorMessage ? 'reset-error-msg' : undefined}
                 required
               />
               <button
@@ -154,6 +166,9 @@ export function ResetPasswordModal({ onBack, onSubmit, isLoading = false }: Rese
                 value={formData.confirmarNovaSenha}
                 onChange={handleChange}
                 className="reset-password-view__input"
+                aria-required="true"
+                aria-invalid={Boolean(errorMessage)}
+                aria-describedby={errorMessage ? 'reset-error-msg' : undefined}
                 required
               />
               <button

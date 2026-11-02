@@ -105,11 +105,15 @@ export function AccessibilityModal({ onClose }: IAccessibilityModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="a11y-modal-title"
+        aria-describedby="a11y-modal-desc"
       >
         <header className="a11y-modal-header">
           <h2 id="a11y-modal-title" className="a11y-modal-title">
             Acessibilidade
           </h2>
+          <p id="a11y-modal-desc" className="visually-hidden">
+            Painel de preferências de acessibilidade e visualização
+          </p>
           <button
             type="button"
             className="a11y-modal-close-btn"

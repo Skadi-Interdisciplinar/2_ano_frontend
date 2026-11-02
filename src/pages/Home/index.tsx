@@ -2,7 +2,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Logout as LogoutIcon } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext.tsx'
 import { AccessibilityButton } from '../../components/AccessibilityButton/index.tsx'
-import { AccessibilityModal } from '../../components/AccessibilityModal/index.tsx'
 import skadiLogoWhite from '../../assets/skadi-logo-white.png'
 
 export default function Home() {
@@ -127,7 +126,6 @@ export default function Home() {
       </footer>
 
       <AccessibilityButton />
-      <AccessibilityModal />
     </div>
   )
 }

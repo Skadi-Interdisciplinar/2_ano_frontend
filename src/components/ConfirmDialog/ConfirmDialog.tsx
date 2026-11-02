@@ -22,21 +22,59 @@ export function ConfirmDialog({
   onConfirm,
   isLoading = false,
 }: ConfirmDialogProps) {
+  const dialogRef = useRef<HTMLDivElement | null>(null)
   const confirmButtonRef = useRef<HTMLButtonElement | null>(null)
+  const previousActiveElementRef = useRef<HTMLElement | null>(null)
 
+  // Gerenciamento de foco programático avançado (WCAG 2.1 AA)
   useEffect(() => {
     if (!isOpen) return
 
+    // Salva o elemento de origem para devolver o foco ao fechar
+    previousActiveElementRef.current = document.activeElement as HTMLElement
+
+    // Move o foco para o botão de confirmação ao abrir
     confirmButtonRef.current?.focus()
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        e.preventDefault()
         onCancel()
+        return
+      }
+
+      // Trap de foco dentro do diálogo
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusableElements = dialogRef.current.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        )
+        if (focusableElements.length === 0) return
+
+        const firstElement = focusableElements[0]
+        const lastElement = focusableElements[focusableElements.length - 1]
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            e.preventDefault()
+            lastElement?.focus()
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            e.preventDefault()
+            firstElement?.focus()
+          }
+        }
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      // Devolve o foco ao elemento de origem ao fechar
+      if (previousActiveElementRef.current) {
+        previousActiveElementRef.current.focus()
+      }
+    }
   }, [isOpen, onCancel])
 
   if (!isOpen) return null
@@ -44,6 +82,7 @@ export function ConfirmDialog({
   return (
     <div className="confirm-dialog-overlay" role="presentation" onClick={onCancel}>
       <div
+        ref={dialogRef}
         className="confirm-dialog"
         role="dialog"
         aria-modal="true"

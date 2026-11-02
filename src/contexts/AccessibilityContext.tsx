@@ -146,7 +146,17 @@ export function AccessibilityProvider({ children }: IAccessibilityProviderProps)
 export function useAccessibility(): IAccessibilityContext {
   const context = useContext(AccessibilityContext)
   if (!context) {
-    throw new Error('useAccessibility deve ser utilizado dentro de um AccessibilityProvider')
+    return {
+      preferences: PREFERENCIAS_PADRAO,
+      isModalOpen: false,
+      abrirModal: () => {},
+      fecharModal: () => {},
+      alternarAltoContraste: () => {},
+      alternarTextoGrande: () => {},
+      alternarFonteDislexia: () => {},
+      alternarSublinharLinks: () => {},
+      restaurarPadrao: () => {},
+    }
   }
   return context
 }

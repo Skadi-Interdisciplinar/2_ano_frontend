@@ -8,7 +8,6 @@ import type { ILoginCredentials } from '../../types/auth.types.ts'
 import { useAuth } from '../../contexts/AuthContext.tsx'
 import { validarLogin } from '../../utils/validation.utils.ts'
 import { AccessibilityButton } from '../../components/AccessibilityButton/index.tsx'
-import { AccessibilityModal } from '../../components/AccessibilityModal/index.tsx'
 import { LoadingSpinner } from '../../components/LoadingSpinner/index.tsx'
 import { ErrorMessage } from '../../components/ErrorMessage/index.tsx'
 import skadiLogoWhite from '../../assets/skadi-logo-white.png'
@@ -230,9 +229,8 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Botão e Modal de Acessibilidade */}
+      {/* Botão de Acessibilidade */}
       <AccessibilityButton />
-      <AccessibilityModal />
     </div>
   )
 }
