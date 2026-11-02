@@ -1,2 +1,5 @@
 export * from './auth.types.ts'
 export * from './accessibility.types.ts'
+export * from './dashboard.types.ts'
+export * from './profile.types.ts'
+export * from './employee.types.ts'

@@ -7,8 +7,8 @@ describe('MenuButton', () => {
     const onClick = vi.fn()
     render(<MenuButton expanded onClick={onClick} />)
 
-    const button = screen.getByRole('button', { name: 'Menu' })
-    expect(button).toHaveProperty('ariaExpanded', 'true')
+    const button = screen.getByRole('button', { name: /menu/i })
+    expect(button.getAttribute('aria-expanded')).toBe('true')
 
     fireEvent.click(button)
     expect(onClick).toHaveBeenCalledOnce()

@@ -18,6 +18,7 @@
   overflow: hidden;
   box-shadow: 0 10px 28px rgba(11, 30, 51, 0.25);
   border: 1px solid rgba(11, 30, 51, 0.08);
+  font-family: 'Manrope', -apple-system, sans-serif;
 }
 
 .a11y-modal-header {
@@ -51,6 +52,11 @@
 
 .a11y-modal-close-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+.a11y-modal-close-btn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
 }
 
 .a11y-modal-body {
@@ -148,6 +154,11 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
+.a11y-switch input:focus-visible + .a11y-slider {
+  outline: 2px solid #0b2540;
+  outline-offset: 2px;
+}
+
 .a11y-switch input:checked + .a11y-slider {
   background-color: #0b2540;
 }
@@ -185,4 +196,63 @@
 
 .a11y-reset-btn:hover {
   background-color: #081d33;
+}
+
+.a11y-reset-btn:focus-visible {
+  outline: 2px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+html.dark-mode .a11y-modal-card {
+  background-color: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+html.dark-mode .a11y-modal-header {
+  background-color: #091120;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode .a11y-modal-item {
+  background-color: #1e293b;
+  border-color: #334155;
+}
+
+html.dark-mode .a11y-item-title {
+  color: #f1f5f9;
+}
+
+html.dark-mode .a11y-item-desc {
+  color: #94a3b8;
+}
+
+html.dark-mode .a11y-item-icon-wrapper {
+  background-color: #091120;
+  color: #93c5fd;
+}
+
+html.dark-mode .a11y-slider {
+  background-color: #475569;
+}
+
+html.dark-mode .a11y-switch input:checked + .a11y-slider {
+  background-color: #3b82f6;
+}
+
+html.dark-mode .a11y-switch input:focus-visible + .a11y-slider {
+  outline-color: #93c5fd;
+}
+
+html.dark-mode .a11y-reset-btn {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  color: #f1f5f9;
+}
+
+html.dark-mode .a11y-reset-btn:hover {
+  background-color: #334155;
 }

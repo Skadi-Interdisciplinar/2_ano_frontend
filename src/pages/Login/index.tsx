@@ -1,7 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  ArrowBackIosNew as ArrowBackIcon,
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
 } from '@mui/icons-material'
@@ -9,7 +8,6 @@ import type { ILoginCredentials } from '../../types/auth.types.ts'
 import { useAuth } from '../../contexts/AuthContext.tsx'
 import { validarLogin } from '../../utils/validation.utils.ts'
 import { AccessibilityButton } from '../../components/AccessibilityButton/index.tsx'
-import { AccessibilityModal } from '../../components/AccessibilityModal/index.tsx'
 import { LoadingSpinner } from '../../components/LoadingSpinner/index.tsx'
 import { ErrorMessage } from '../../components/ErrorMessage/index.tsx'
 import skadiLogoWhite from '../../assets/skadi-logo-white.png'
@@ -62,7 +60,7 @@ export default function Login() {
     try {
       const success = await login(credentials)
       if (success) {
-        navigate('/home', { replace: true })
+        navigate('/dashboards', { replace: true })
       }
     } catch (err: unknown) {
       const message =
@@ -75,6 +73,11 @@ export default function Login() {
 
   return (
     <div className="login-page-container">
+      {/* WCAG 2.1 AA: Skip to main content link */}
+      <a href="#main-content" className="skip-link">
+        Pular para o formulário de login
+      </a>
+
       {/* Botão Voltar */}
       <button
         type="button"
@@ -82,22 +85,33 @@ export default function Login() {
         onClick={() => navigate(-1)}
         aria-label="Voltar para a página anterior"
       >
-        <ArrowBackIcon fontSize="small" />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="login-back-icon"
+          aria-hidden="true"
+        >
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
       </button>
 
       <div className="login-content-wrapper">
-        {/* Lado Esquerdo: Lobo Branco Skadi */}
+        {/* LADO ESQUERDO: Lobo */}
         <div className="login-hero-side">
           <img
             src={skadiLogoWhite}
-            alt="Logo Skadi - Lobo estilizado"
+            alt="Lobo Skadi"
             className="login-hero-logo"
           />
         </div>
 
-        {/* Lado Direito: Card de Login */}
+        {/* LADO DIREITO: Cartão de login */}
         <div className="login-card-side">
-          <main className="login-card">
+          <main className="login-card" id="main-content" tabIndex={-1}>
             <header className="login-card-header">
               <h1 className="login-brand-title">S K A D I</h1>
               <p className="login-brand-subtitle">Área restrita</p>
@@ -107,7 +121,7 @@ export default function Login() {
               {/* Feedback de erro geral no DOM com role="alert" */}
               <ErrorMessage message={serverError} />
 
-              {/* Campo Usuário */}
+              {/* Campo: Usuário */}
               <div className="login-field-group">
                 <label htmlFor="login-usuario" className="login-label">
                   Usuário
@@ -135,7 +149,7 @@ export default function Login() {
                 ) : null}
               </div>
 
-              {/* Campo Senha */}
+              {/* Campo: Senha com olho */}
               <div className="login-field-group">
                 <label htmlFor="login-senha" className="login-label">
                   Senha
@@ -160,6 +174,7 @@ export default function Login() {
                     className="login-password-toggle-btn"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={showPassword ? 'Ocultar senha' : 'Exibir senha'}
+                    aria-pressed={showPassword}
                     tabIndex={0}
                   >
                     {showPassword ? (
@@ -176,9 +191,9 @@ export default function Login() {
                 ) : null}
               </div>
 
-              {/* Lembre-se de mim */}
+              {/* Lembre-se de mim + Esqueceu a senha */}
               <div className="login-options-row">
-                <label className="login-remember-label" htmlFor="login-lembrete">
+                <div className="login-checkbox-group">
                   <input
                     id="login-lembrete"
                     type="checkbox"
@@ -187,8 +202,19 @@ export default function Login() {
                     onChange={(e) => handleInputChange('lembreMe', e.target.checked)}
                     disabled={isLoading}
                   />
-                  <span>Lembre-se de mim</span>
-                </label>
+                  <label className="login-remember-label" htmlFor="login-lembrete">
+                    Lembre-se de mim
+                  </label>
+                </div>
+                <a
+                  href="#esqueci-senha"
+                  className="login-forgot-link"
+                  onClick={(e) => {
+                    e.preventDefault()
+                  }}
+                >
+                  Esqueceu a senha?
+                </a>
               </div>
 
               {/* Botão Entrar ou Spinner */}
@@ -208,9 +234,13 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Botão e Modal de Acessibilidade */}
+      {/* Botão de Acessibilidade */}
       <AccessibilityButton />
-      <AccessibilityModal />
+
+      {/* Landmark: Rodapé / Footer */}
+      <footer className="login-footer sr-only">
+        <p>© 2026 Skadi · Área Restrita · Todos os direitos reservados.</p>
+      </footer>
     </div>
   )
 }

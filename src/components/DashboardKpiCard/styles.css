@@ -1,0 +1,129 @@
+.dashboard-kpi-card__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: 14px;
+  outline: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dashboard-kpi-card__link:focus-visible {
+  outline: 2px solid #0b55a2;
+  outline-offset: 3px;
+}
+
+.dashboard-kpi-card {
+  background-color: #ffffff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  padding: 1.8rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 140px;
+  box-shadow: 0 4px 12px rgba(15, 46, 79, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-kpi-card__link:hover .dashboard-kpi-card {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 46, 79, 0.08);
+  border-color: #cbd5e1;
+}
+
+.dashboard-kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background-color: #0F2E4F;
+}
+
+.dashboard-kpi-card--info::before {
+  background-color: #0284c7;
+}
+
+.dashboard-kpi-card--warning::before {
+  background-color: #f59e0b;
+}
+
+.dashboard-kpi-card--success::before {
+  background-color: #10b981;
+}
+
+.dashboard-kpi-card--alert::before {
+  background-color: #ef4444;
+}
+
+.dashboard-kpi-card__title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: 'Manrope', -apple-system, sans-serif;
+}
+
+.dashboard-kpi-card__body {
+  margin: 1.2rem 0 0.8rem;
+}
+
+.dashboard-kpi-card__value {
+  display: block;
+  font-size: 3.2rem;
+  font-weight: 700;
+  color: #0F2E4F;
+  line-height: 1;
+  font-family: 'Manrope', -apple-system, sans-serif;
+}
+
+.dashboard-kpi-card__desc {
+  margin: 0.6rem 0 0;
+  font-size: 1.2rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.dashboard-kpi-card__action {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0F2E4F;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: auto;
+}
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+html.dark-mode .dashboard-kpi-card {
+  background-color: #132238;
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .dashboard-kpi-card__link:hover .dashboard-kpi-card {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+html.dark-mode .dashboard-kpi-card__title {
+  color: #94a3b8;
+}
+
+html.dark-mode .dashboard-kpi-card__value {
+  color: #f8fafc;
+}
+
+html.dark-mode .dashboard-kpi-card__desc {
+  color: #94a3b8;
+}
+
+html.dark-mode .dashboard-kpi-card__action {
+  color: #60a5fa;
+}

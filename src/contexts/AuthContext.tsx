@@ -39,8 +39,8 @@ function usuarioDoToken(token: string): string | null {
   }
 }
 
-function usuarioDaSessao(token: string, informado: string): IAuthUser {
-  const usuario = usuarioDoToken(token) ?? informado
+function usuarioDaSessao(token: string, informado?: string): IAuthUser {
+  const usuario = usuarioDoToken(token) ?? informado ?? 'usuario'
   return { id: usuario, nome: usuario, usuario }
 }
 
@@ -86,17 +86,23 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     try {
       // Faz requisição estrita para a API
       const response = await postLogin(credentials)
-      const sessionUser = usuarioDaSessao(response.token, credentials.username)
-      setUser(sessionUser)
+      const sessionUser = usuarioDaSessao(response.token, credentials.usuario ?? credentials.username)
+      const resolvedUser = response.user ?? sessionUser
+      setUser(resolvedUser)
       setIsAuthenticated(true)
 
       salvarComVersao(TOKEN_KEY, response.token, SCHEMA_VERSAO)
-      salvarComVersao(USER_KEY, sessionUser, SCHEMA_VERSAO)
-      salvarComVersao(
-        SESSION_KEY,
-        { expirationTime: response.expirationTime, validUntil: response.validUntil },
-        SCHEMA_VERSAO,
-      )
+      salvarComVersao(USER_KEY, resolvedUser, SCHEMA_VERSAO)
+      if (response.expirationTime || response.validUntil) {
+        salvarComVersao(
+          SESSION_KEY,
+          { expirationTime: response.expirationTime, validUntil: response.validUntil },
+          SCHEMA_VERSAO,
+        )
+      }
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('token', response.token)
+      }
       return true
     } catch (error) {
       setUser(null)
@@ -110,6 +116,9 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   const logout = useCallback(() => {
     void postLogout()
     limparSessao()
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('token')
+    }
     setUser(null)
     setIsAuthenticated(false)
   }, [])

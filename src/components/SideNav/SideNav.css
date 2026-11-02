@@ -75,3 +75,18 @@
   outline-offset: 2px;
 }
 
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+.dark-mode .side-nav {
+  background: #0b1a2e;
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.dark-mode .side-nav__link--current {
+  background: #38bdf8;
+  color: #0b1a2e;
+  font-weight: 700;
+}
+
+

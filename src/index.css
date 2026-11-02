@@ -43,6 +43,16 @@ body {
   background: #ffffff;
 }
 
+html.dark-mode {
+  color-scheme: dark;
+}
+
+html.dark-mode,
+html.dark-mode body {
+  background-color: #091422;
+  color: #f8fafc;
+}
+
 #root {
   width: 100%;
   max-width: none;
@@ -117,4 +127,47 @@ html.a11y-underline-links button[class*="link"],
 html.a11y-underline-links .login-forgot-link {
   text-decoration: underline 2px !important;
   text-underline-offset: 4px !important;
+}
+
+
+/* ==========================================================================
+   Utilitários de Acessibilidade (WCAG 2.1 AA)
+   ========================================================================== */
+
+/* Pular para o conteúdo principal (WCAG 2.1 AA - 2.4.1 Bypass Blocks) */
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 1rem;
+  z-index: 10000;
+  padding: 0.85rem 1.5rem;
+  background-color: #0F2E4F;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus,
+.skip-link:focus-visible {
+  top: 1rem;
+  outline: 3px solid #38bdf8;
+  outline-offset: 3px;
+}
+
+/* Esconde visualmente mas mantém legível por leitores de tela (NVDA / VoiceOver) */
+.visually-hidden,
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

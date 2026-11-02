@@ -69,3 +69,36 @@
   background: rgba(0, 0, 0, 0.4);
   cursor: pointer;
 }
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+.dark-mode .administrators-screen {
+  background: #091422;
+}
+
+.dark-mode .administrators-screen__header {
+  background: #0b1a2e;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .administrators-screen__content {
+  background: #091422;
+  box-shadow: none;
+}
+
+
+.administrators-screen__footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  color: #64748b;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.dark-mode .administrators-screen__footer {
+  background-color: #0b1a2e;
+  color: #94a3b8;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}

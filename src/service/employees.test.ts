@@ -1,8 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import api from '../config/axiosConnection.ts'
-import { createAdministrador, deleteAdministrador, getCds, getFuncionarios, updateAdministrador } from './employees.ts'
+import api from '../services/api.ts'
+import {
+  createAdministrador,
+  deleteAdministrador,
+  getCds,
+  getFuncionarios,
+  updateAdministrador,
+} from './employees.ts'
 
-vi.mock('../config/axiosConnection.ts', () => ({
+vi.mock('../services/api.ts', () => ({
   default: {
     get: vi.fn(),
     post: vi.fn(),

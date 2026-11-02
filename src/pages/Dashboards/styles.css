@@ -1,0 +1,341 @@
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Manrope', -apple-system, sans-serif;
+}
+
+.dashboard-page__header {
+  height: 98px;
+  background: #0F2E4F;
+  display: flex;
+  align-items: center;
+  padding: 0 44px;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.dashboard-page__body {
+  display: flex;
+  flex: 1;
+  position: relative;
+  min-height: calc(100vh - 98px);
+}
+
+.dashboard-page__content {
+  flex: 1;
+  padding: 3rem 4rem 5rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  position: relative;
+}
+
+/* ==========================================================================
+   Overview Bar
+   ========================================================================== */
+.dashboard-page__overview-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dashboard-page__main-title {
+  margin: 0;
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #0F2E4F;
+  letter-spacing: -0.02em;
+}
+
+.dashboard-page__greeting {
+  margin: 0.4rem 0 0;
+  font-size: 1.45rem;
+  color: #64748b;
+}
+
+.dashboard-page__greeting strong {
+  color: #0F2E4F;
+}
+
+.dashboard-page__update-time {
+  color: #94a3b8;
+  font-size: 1.3rem;
+}
+
+.dashboard-page__refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background-color: #ffffff;
+  color: #0F2E4F;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(15, 46, 79, 0.05);
+  transition: all 0.15s ease;
+}
+
+.dashboard-page__refresh-btn:hover:not(:disabled) {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+  transform: translateY(-1px);
+}
+
+.dashboard-page__refresh-btn:focus-visible {
+  outline: 2px solid #0F2E4F;
+  outline-offset: 2px;
+}
+
+.dashboard-page__refresh-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dashboard-refresh-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   State Boxes (Loading / Error)
+   ========================================================================== */
+.dashboard-page__state-box {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 6rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.dashboard-page__state-box--error {
+  border-color: #fecaca;
+  background-color: #fef2f2;
+}
+
+.dashboard-page__error-title {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #b91c1c;
+}
+
+.dashboard-page__error-desc {
+  margin: 0.8rem 0 2rem;
+  font-size: 1.4rem;
+  color: #7f1d1d;
+  max-width: 500px;
+}
+
+.dashboard-page__retry-btn {
+  background-color: #b91c1c;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.dashboard-page__retry-btn:hover {
+  background-color: #991b1b;
+}
+
+/* ==========================================================================
+   Grids
+   ========================================================================== */
+.dashboard-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.8rem;
+}
+
+.dashboard-charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 2rem;
+}
+
+.dashboard-recent-section {
+  width: 100%;
+}
+
+/* ==========================================================================
+   Shortcuts Bar
+   ========================================================================== */
+.dashboard-shortcuts-bar {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+}
+
+.dashboard-shortcut-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.2rem 2.4rem;
+  background-color: #0F2E4F;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(15, 46, 79, 0.15);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.dashboard-shortcut-btn:hover {
+  background-color: #0c243f;
+  transform: translateY(-2px);
+}
+
+.dashboard-shortcut-btn:focus-visible {
+  outline: 2px solid #0F2E4F;
+  outline-offset: 3px;
+}
+
+.dashboard-shortcut-btn--secondary {
+  background-color: #ffffff;
+  color: #0F2E4F;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 6px rgba(15, 46, 79, 0.05);
+}
+
+.dashboard-shortcut-btn--secondary:hover {
+  background-color: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+/* ==========================================================================
+   Modo Escuro (Dark Mode)
+   ========================================================================== */
+html.dark-mode .dashboard-page {
+  background-color: #091422;
+}
+
+html.dark-mode .dashboard-page__header {
+  background: #06111f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode .dashboard-page__overview-bar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html.dark-mode .dashboard-page__main-title {
+  color: #f8fafc;
+}
+
+html.dark-mode .dashboard-page__greeting {
+  color: #94a3b8;
+}
+
+html.dark-mode .dashboard-page__greeting strong {
+  color: #60a5fa;
+}
+
+html.dark-mode .dashboard-page__refresh-btn {
+  background-color: #132238;
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .dashboard-page__refresh-btn:hover:not(:disabled) {
+  background-color: #1e3352;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+html.dark-mode .dashboard-shortcut-btn {
+  background-color: #1a426e;
+}
+
+html.dark-mode .dashboard-shortcut-btn:hover {
+  background-color: #23558d;
+}
+
+html.dark-mode .dashboard-shortcut-btn--secondary {
+  background-color: #132238;
+  color: #93c5fd;
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html.dark-mode .dashboard-shortcut-btn--secondary:hover {
+  background-color: #1e3352;
+}
+
+/* ==========================================================================
+   Responsividade Mobile (max-width: 900px e 600px)
+   ========================================================================== */
+@media (max-width: 900px) {
+  .dashboard-page__content {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .dashboard-page__overview-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+
+  .dashboard-page__refresh-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .dashboard-charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-shortcuts-bar {
+    flex-direction: column;
+  }
+
+  .dashboard-shortcut-btn {
+    width: 100%;
+  }
+}
+
+/* Footer Landmark */
+.dashboard-page__footer {
+  text-align: center;
+  padding: 1.8rem;
+  font-size: 1.25rem;
+  color: #64748b;
+  background-color: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  margin-top: auto;
+}
+
+html.dark-mode .dashboard-page__footer {
+  background-color: #0b1a2d;
+  color: #94a3b8;
+  border-top-color: rgba(255, 255, 255, 0.08);
+}

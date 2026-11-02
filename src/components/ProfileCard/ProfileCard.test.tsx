@@ -53,4 +53,21 @@ describe('ProfileCard', () => {
     expect(switchBtn.getAttribute('aria-checked')).toBe('true')
     expect(onToggleDarkMode).toHaveBeenCalledWith(true)
   })
+
+  it('exibe a primeira letra do primeiro nome no avatar', () => {
+    const customProfile = {
+      ...DEFAULT_USER_PROFILE,
+      nome: 'Carlos Eduardo Ferreira',
+    }
+
+    render(
+      <ProfileCard
+        profile={customProfile}
+        onOpenResetPassword={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByText('C')).toBeTruthy()
+  })
 })
+

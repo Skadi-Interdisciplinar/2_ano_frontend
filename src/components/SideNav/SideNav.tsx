@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import profile from '../../assets/admin/profile.svg'
 import './SideNav.css'
 
@@ -5,15 +6,37 @@ export type SideNavProps = {
   currentSection?: 'administradores' | 'perfil' | 'dashboards' | 'chamados'
   onNavigate?: (section: 'administradores' | 'perfil' | 'dashboards' | 'chamados') => void
   onLogout?: () => void
+  onClose?: () => void
 }
 
 export function SideNav({
   currentSection = 'administradores',
   onNavigate,
   onLogout,
+  onClose,
 }: SideNavProps) {
+  const navRef = useRef<HTMLElement | null>(null)
+
+  // Gerenciamento de teclado: Fechar no Escape
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && onClose) {
+        event.preventDefault()
+        onClose()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
   return (
-    <nav className="side-nav" id="menu-lateral" aria-label="Menu lateral">
+    <nav
+      ref={navRef}
+      className="side-nav"
+      id="menu-lateral"
+      aria-label="Menu lateral principal"
+    >
       <button
         type="button"
         className={`side-nav__link ${currentSection === 'dashboards' ? 'side-nav__link--current' : ''}`}
