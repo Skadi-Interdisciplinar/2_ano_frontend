@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { carregarComVersao } from '../utils/storage.utils.ts'
 
-const baseURL: string =
-  (import.meta.env.VITE_API_URL as string | undefined) ??
-  (import.meta.env.API_URL as string | undefined) ??
-  'http://localhost:3000'
+const configured =
+  (import.meta.env.VITE_API_URL as string | undefined) ||
+  (import.meta.env.API_URL as string | undefined) ||
+  ''
+
+const baseURL = configured.trim() || '/api'
 
 export const api = axios.create({
   baseURL,
@@ -13,9 +15,11 @@ export const api = axios.create({
   },
 })
 
-// Interceptor para injetar o token com segurança
 api.interceptors.request.use((config) => {
-  const token = carregarComVersao<string | null>('skadi_token', 1, null)
+  const token =
+    carregarComVersao<string | null>('skadi_token', 1, null) ??
+    (typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null)
+
   if (token && config.headers) {
     config.headers.Authorization = `Bearer ${token}`
   }

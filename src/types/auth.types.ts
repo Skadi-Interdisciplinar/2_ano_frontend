@@ -1,6 +1,8 @@
 export interface ILoginCredentials {
-  usuario: string
-  senha: string
+  username?: string
+  usuario?: string
+  password?: string
+  senha?: string
   lembreMe?: boolean
 }
 
@@ -14,7 +16,9 @@ export interface IAuthUser {
 
 export interface ILoginResponse {
   token: string
-  user: IAuthUser
+  expirationTime?: number
+  validUntil?: string
+  user?: IAuthUser
 }
 
 export interface IAuthContext {

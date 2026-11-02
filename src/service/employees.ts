@@ -1,1 +1,8 @@
-export { getFuncionarios } from '../services/employee.service.ts'
+export {
+  mensagemDaApi,
+  getCds,
+  getFuncionarios,
+  createAdministrador,
+  updateAdministrador,
+  deleteAdministrador,
+} from '../services/employee.service.ts'

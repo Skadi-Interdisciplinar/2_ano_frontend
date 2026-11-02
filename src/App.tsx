@@ -8,8 +8,17 @@ import { LoadingSpinner } from './components/LoadingSpinner/index.tsx'
 
 const Login = lazy(() => import('./pages/Login/index.tsx'))
 const Dashboards = lazy(() => import('./pages/Dashboards/index.tsx'))
-const AdministratorsScreen = lazy(() => import('./pages/Administrators/index.tsx'))
+const AdministratorsScreen = lazy(() =>
+  import('./pages/AdministratorsScreen/AdministratorsScreen.tsx').then((m) => ({
+    default: m.AdministratorsScreen,
+  })),
+)
 const ProfileScreen = lazy(() => import('./pages/Profile/index.tsx'))
+const SupportScreen = lazy(() =>
+  import('./pages/SupportScreen/SupportScreen.tsx').then((m) => ({
+    default: m.SupportScreen,
+  })),
+)
 const EmployeeDetails = lazy(() => import('./pages/EmployeeDetails/index.tsx'))
 const NotFound = lazy(() => import('./pages/NotFound/index.tsx'))
 
@@ -54,6 +63,7 @@ export default function App() {
                 <Route path="/home" element={<Navigate to="/dashboards" replace />} />
                 <Route path="/perfil" element={<ProfileScreen />} />
                 <Route path="/administradores" element={<AdministratorsScreen />} />
+                <Route path="/chamados" element={<SupportScreen />} />
                 <Route path="/funcionarios/:id" element={<EmployeeDetails />} />
               </Route>
 

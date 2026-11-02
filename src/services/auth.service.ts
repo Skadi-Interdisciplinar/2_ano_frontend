@@ -1,18 +1,22 @@
 import axios from 'axios'
-import api from './api.ts'
+import api from '../config/axiosConnection.ts'
 import type { ILoginCredentials, ILoginResponse } from '../types/auth.types.ts'
 
 /**
  * Serviço de autenticação isolado por recurso.
- * Utiliza a mesma nomenclatura do mobile ({ usuario, senha }).
+ * O corpo enviado é { username, password }.
  */
 export const postLogin = async (credentials: ILoginCredentials): Promise<ILoginResponse> => {
   try {
     const response = await api.post<ILoginResponse>('/auth/login', {
-      usuario: credentials.usuario,
-      senha: credentials.senha,
+      username: credentials.username,
+      password: credentials.password,
     })
-    return response.data
+    const data = response.data
+    if (!data?.token) {
+      throw new Error('Resposta de login sem token.')
+    }
+    return data
   } catch (error: unknown) {
     if (axios.isAxiosError<{ message?: string }>(error)) {
       if (!error.response) {

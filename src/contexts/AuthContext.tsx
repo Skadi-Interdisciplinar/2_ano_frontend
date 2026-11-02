@@ -10,6 +10,7 @@ import type {
   IAuthContext,
   IAuthUser,
   ILoginCredentials,
+  ILoginResponse,
 } from '../types/auth.types.ts'
 import { postLogin, postLogout } from '../services/auth.service.ts'
 import {
@@ -20,7 +21,51 @@ import {
 
 const TOKEN_KEY = 'skadi_token'
 const USER_KEY = 'skadi_user'
+const SESSION_KEY = 'skadi_session'
 const SCHEMA_VERSAO = 1
+
+function usuarioDoToken(token: string): string | null {
+  try {
+    const payload = token.split('.')[1]
+    if (!payload) return null
+    const normalized = payload.replace(/-/g, '+').replace(/_/g, '/')
+    const json: unknown = JSON.parse(atob(normalized))
+    if (typeof json === 'object' && json !== null && 'sub' in json && typeof json.sub === 'string') {
+      return json.sub
+    }
+    return null
+  } catch {
+    return null
+  }
+}
+
+function usuarioDaSessao(token: string, informado?: string): IAuthUser {
+  const usuario = usuarioDoToken(token) ?? informado ?? 'usuario'
+  return { id: usuario, nome: usuario, usuario }
+}
+
+function sessaoExpirada(): boolean {
+  const session = carregarComVersao<Pick<ILoginResponse, 'validUntil'> | null>(SESSION_KEY, SCHEMA_VERSAO, null)
+  if (!session?.validUntil) return false
+  const validUntil = Date.parse(session.validUntil)
+  return Number.isFinite(validUntil) && validUntil <= Date.now()
+}
+
+function limparSessao() {
+  removerItem(TOKEN_KEY)
+  removerItem(USER_KEY)
+  removerItem(SESSION_KEY)
+}
+
+function sessaoSalva(): { token: string; user: IAuthUser } | null {
+  if (sessaoExpirada()) {
+    limparSessao()
+    return null
+  }
+  const token = carregarComVersao<string | null>(TOKEN_KEY, SCHEMA_VERSAO, null)
+  const user = carregarComVersao<IAuthUser | null>(USER_KEY, SCHEMA_VERSAO, null)
+  return token && user ? { token, user } : null
+}
 
 const AuthContext = createContext<IAuthContext | null>(null)
 
@@ -30,17 +75,9 @@ export interface IAuthProviderProps {
 
 export function AuthProvider({ children }: IAuthProviderProps) {
   // Inicialização preguiçosa sem disparar render em cascata via useEffect
-  const [user, setUser] = useState<IAuthUser | null>(() => {
-    const savedToken = carregarComVersao<string | null>(TOKEN_KEY, SCHEMA_VERSAO, null)
-    const savedUser = carregarComVersao<IAuthUser | null>(USER_KEY, SCHEMA_VERSAO, null)
-    return savedToken && savedUser ? savedUser : null
-  })
+  const [user, setUser] = useState<IAuthUser | null>(() => sessaoSalva()?.user ?? null)
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    const savedToken = carregarComVersao<string | null>(TOKEN_KEY, SCHEMA_VERSAO, null)
-    const savedUser = carregarComVersao<IAuthUser | null>(USER_KEY, SCHEMA_VERSAO, null)
-    return Boolean(savedToken && savedUser)
-  })
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => Boolean(sessaoSalva()))
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -49,12 +86,20 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     try {
       // Faz requisição estrita para a API
       const response = await postLogin(credentials)
-      setUser(response.user)
+      const sessionUser = usuarioDaSessao(response.token, credentials.usuario ?? credentials.username)
+      const resolvedUser = response.user ?? sessionUser
+      setUser(resolvedUser)
       setIsAuthenticated(true)
 
-      // Persiste com schema versionado (_versao: 1)
       salvarComVersao(TOKEN_KEY, response.token, SCHEMA_VERSAO)
-      salvarComVersao(USER_KEY, response.user, SCHEMA_VERSAO)
+      salvarComVersao(USER_KEY, resolvedUser, SCHEMA_VERSAO)
+      if (response.expirationTime || response.validUntil) {
+        salvarComVersao(
+          SESSION_KEY,
+          { expirationTime: response.expirationTime, validUntil: response.validUntil },
+          SCHEMA_VERSAO,
+        )
+      }
       if (typeof localStorage !== 'undefined') {
         localStorage.setItem('token', response.token)
       }
@@ -70,8 +115,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
 
   const logout = useCallback(() => {
     void postLogout()
-    removerItem(TOKEN_KEY)
-    removerItem(USER_KEY)
+    limparSessao()
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem('token')
     }

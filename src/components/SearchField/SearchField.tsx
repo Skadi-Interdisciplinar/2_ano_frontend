@@ -4,9 +4,10 @@ import './SearchField.css'
 type SearchFieldProps = {
   value: string
   onChange: (value: string) => void
+  label?: string
 }
 
-export function SearchField({ value, onChange }: SearchFieldProps) {
+export function SearchField({ value, onChange, label = 'Buscar administrador' }: SearchFieldProps) {
   return (
     <label className="search-field">
       <img src={search} alt="" width={18} height={18} />
@@ -14,7 +15,7 @@ export function SearchField({ value, onChange }: SearchFieldProps) {
         type="search"
         value={value}
         placeholder="Buscar"
-        aria-label="Buscar administrador"
+        aria-label={label}
         onChange={(event) => onChange(event.target.value)}
       />
     </label>

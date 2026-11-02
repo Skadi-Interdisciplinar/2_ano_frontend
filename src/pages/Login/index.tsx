@@ -19,8 +19,8 @@ export default function Login() {
 
   // Requisito 6: Estado local gerenciado com useState, campos relacionados agrupados em um único objeto
   const [credentials, setCredentials] = useState<ILoginCredentials>({
-    usuario: '',
-    senha: '',
+    username: '',
+    password: '',
     lembreMe: false,
   })
 
@@ -129,22 +129,22 @@ export default function Login() {
                 <div className="login-input-wrapper">
                   <input
                     id="login-usuario"
-                    name="usuario"
+                    name="username"
                     type="text"
                     className="login-input"
                     placeholder="Bia.hins"
-                    value={credentials.usuario}
-                    onChange={(e) => handleInputChange('usuario', e.target.value)}
+                    value={credentials.username}
+                    onChange={(e) => handleInputChange('username', e.target.value)}
                     aria-required="true"
-                    aria-invalid={Boolean(errors.usuario)}
-                    aria-describedby={errors.usuario ? 'usuario-error' : undefined}
+                    aria-invalid={Boolean(errors.username)}
+                    aria-describedby={errors.username ? 'usuario-error' : undefined}
                     disabled={isLoading}
                     autoComplete="username"
                   />
                 </div>
-                {errors.usuario ? (
+                {errors.username ? (
                   <span id="usuario-error" className="login-field-error" role="alert">
-                    {errors.usuario}
+                    {errors.username}
                   </span>
                 ) : null}
               </div>
@@ -157,15 +157,15 @@ export default function Login() {
                 <div className="login-input-wrapper">
                   <input
                     id="login-senha"
-                    name="senha"
+                    name="password"
                     type={showPassword ? 'text' : 'password'}
                     className="login-input"
                     placeholder="Bia.123"
-                    value={credentials.senha}
-                    onChange={(e) => handleInputChange('senha', e.target.value)}
+                    value={credentials.password}
+                    onChange={(e) => handleInputChange('password', e.target.value)}
                     aria-required="true"
-                    aria-invalid={Boolean(errors.senha)}
-                    aria-describedby={errors.senha ? 'senha-error' : undefined}
+                    aria-invalid={Boolean(errors.password)}
+                    aria-describedby={errors.password ? 'senha-error' : undefined}
                     disabled={isLoading}
                     autoComplete="current-password"
                   />
@@ -184,9 +184,9 @@ export default function Login() {
                     )}
                   </button>
                 </div>
-                {errors.senha ? (
+                {errors.password ? (
                   <span id="senha-error" className="login-field-error" role="alert">
-                    {errors.senha}
+                    {errors.password}
                   </span>
                 ) : null}
               </div>
