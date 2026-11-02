@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import type { Administrator, AdministratorInput, AdministratorUpdate } from '../../data/administrators.ts'
 import type { Cd } from '../../data/distributionCenter.ts'
 import { AccessibilityButton } from '../../components/AccessibilityButton/AccessibilityButton.tsx'
@@ -22,6 +23,7 @@ import {
 import './AdministratorsScreen.css'
 
 export function AdministratorsScreen() {
+  const navigate = useNavigate()
   const [menuOpen, setMenuOpen] = useState(true)
   const [query, setQuery] = useState('')
   const [administrators, setAdministrators] = useState<Administrator[]>([])
@@ -122,7 +124,16 @@ export function AdministratorsScreen() {
         <BrandTitle />
       </header>
       <div className="administrators-screen__body">
-        {menuOpen ? <SideNav /> : null}
+        {menuOpen ? (
+          <SideNav
+            currentSection="administradores"
+            onNavigate={(section) => {
+              if (section === 'chamados') navigate('/chamados')
+              if (section === 'perfil') navigate('/perfil')
+              if (section === 'dashboards') navigate('/home')
+            }}
+          />
+        ) : null}
         <section className="administrators-screen__content">
           <div className="administrators-screen__toolbar">
             <SearchField value={query} onChange={setQuery} />

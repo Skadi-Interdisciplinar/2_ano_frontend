@@ -1,0 +1,107 @@
+.support-table {
+  --support-columns: minmax(110px, 0.8fr) minmax(220px, 2.4fr) minmax(160px, 1fr) minmax(140px, 1.2fr) 44px;
+  overflow-x: auto;
+}
+
+.support-table__header,
+.support-table__row {
+  display: grid;
+  grid-template-columns: var(--support-columns);
+  align-items: center;
+  min-width: 860px;
+  padding: 0 12px;
+}
+
+.support-table__header {
+  height: 48px;
+  border-radius: 15px;
+  background: #0f2e4f;
+  color: #ffffff;
+  font-family: Inter, sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.support-table__actions-label,
+.support-table__status-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.support-table__cards {
+  display: flex;
+  flex-direction: column;
+}
+
+.support-table__row {
+  flex: 0 0 40px;
+  height: 40px;
+  min-height: 40px;
+  max-height: 40px;
+  color: #000000;
+  font-family: Manrope, sans-serif;
+  font-size: 15px;
+}
+
+.support-table__row p {
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.support-table__status select {
+  width: min(100%, 168px);
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid #d7e0ea;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #000000;
+  font-family: Manrope, sans-serif;
+  font-size: 14px;
+}
+
+.support-table__actions {
+  position: relative;
+  width: 36px;
+  height: 17px;
+}
+
+.support-table__actions img {
+  display: block;
+  width: 36px;
+  height: 17px;
+}
+
+.support-table__actions button {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.support-table__actions button:first-of-type {
+  left: 0;
+}
+
+.support-table__actions button:last-of-type {
+  right: 0;
+}
+
+.support-table__status select:focus-visible,
+.support-table__actions button:focus-visible {
+  outline: 2px solid #2e8fea;
+  outline-offset: 2px;
+}

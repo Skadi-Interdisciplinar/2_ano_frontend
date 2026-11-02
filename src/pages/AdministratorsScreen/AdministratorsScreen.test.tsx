@@ -1,8 +1,17 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
 import type { Administrator } from '../../data/administrators.ts'
 import { deleteAdministrador, getCds, getFuncionarios } from '../../service/employees.ts'
 import { AdministratorsScreen } from './AdministratorsScreen.tsx'
+
+function renderScreen() {
+  return render(
+    <MemoryRouter>
+      <AdministratorsScreen />
+    </MemoryRouter>,
+  )
+}
 
 vi.mock('../../service/employees.ts', () => ({
   getFuncionarios: vi.fn(async () => []),
@@ -37,7 +46,7 @@ describe('AdministratorsScreen', () => {
 
   it('mostra só os administradores devolvidos pela API', async () => {
     vi.mocked(getFuncionarios).mockResolvedValue([administrator])
-    render(<AdministratorsScreen />)
+    renderScreen()
 
     expect(await screen.findByRole('article', { name: 'Enzo Nascimento' })).toBeTruthy()
     expect(screen.queryByRole('columnheader', { name: 'Senha' })).toBeNull()
@@ -45,7 +54,7 @@ describe('AdministratorsScreen', () => {
   })
 
   it('fica vazia quando a API não devolve administradores', async () => {
-    render(<AdministratorsScreen />)
+    renderScreen()
 
     await waitFor(() => expect(getFuncionarios).toHaveBeenCalled())
     expect(screen.queryByRole('article')).toBeNull()
@@ -57,7 +66,7 @@ describe('AdministratorsScreen', () => {
       administrator,
       { ...administrator, id: 4, nome: 'Marina Costa', username: 'marina.costa' },
     ])
-    render(<AdministratorsScreen />)
+    renderScreen()
 
     expect(await screen.findByRole('article', { name: 'Marina Costa' })).toBeTruthy()
     fireEvent.change(screen.getByRole('searchbox', { name: 'Buscar administrador' }), {
@@ -70,7 +79,7 @@ describe('AdministratorsScreen', () => {
 
   it('pede confirmação antes de excluir e busca a lista de novo', async () => {
     vi.mocked(getFuncionarios).mockResolvedValueOnce([administrator]).mockResolvedValueOnce([])
-    render(<AdministratorsScreen />)
+    renderScreen()
 
     fireEvent.click(await screen.findByRole('button', { name: 'Excluir Enzo Nascimento' }))
     expect(screen.getByText('Confirma a exclusão desse Administrador?')).toBeTruthy()
