@@ -75,18 +75,26 @@ describe('SupportScreen', () => {
     expect(screen.getByText('0 - 0 of 0')).toBeTruthy()
   })
 
-  it('não lista chamados para quem não é super admin e mostra o chamado criado', async () => {
+  it('mostra a tabela quando o login não traz cargo e a listagem responde', async () => {
     vi.mocked(useAuth).mockReturnValue({
-      user: { id: '4', nome: 'Maria', usuario: 'maria', cargo: 'OPERADOR' },
+      user: { id: '11', nome: 'usuario11', usuario: 'usuario11' },
       isAuthenticated: true,
       isLoading: false,
       login: vi.fn(),
       logout: vi.fn(),
     })
-    vi.mocked(abrirChamado).mockResolvedValue(chamado)
+    vi.mocked(listarChamados).mockResolvedValue([chamado])
     renderScreen()
 
-    expect(listarChamados).not.toHaveBeenCalled()
+    expect(await screen.findByText('0 - 1 of 1')).toBeTruthy()
+    expect(screen.queryByRole('article', { name: 'Chamado aberto' })).toBeNull()
+  })
+
+  it('recarrega a tabela depois de abrir um chamado', async () => {
+    vi.mocked(abrirChamado).mockResolvedValue(chamado)
+    vi.mocked(listarChamados).mockResolvedValueOnce([]).mockResolvedValueOnce([chamado])
+    renderScreen()
+
     fireEvent.click(screen.getByRole('button', { name: 'Adicionar chamado' }))
     fireEvent.change(screen.getByLabelText('Descrição'), { target: { value: 'Não consigo abrir o relatório.' } })
     fireEvent.click(screen.getByRole('button', { name: 'Confirmar' }))
@@ -97,9 +105,9 @@ describe('SupportScreen', () => {
         descricao: 'Não consigo abrir o relatório.',
       }),
     )
-    expect(await screen.findByRole('article', { name: 'Chamado aberto' })).toBeTruthy()
-    expect(screen.getByText('Abertura: 2026-10-29T08:25:00')).toBeTruthy()
-    expect(listarChamados).not.toHaveBeenCalled()
+    expect(await screen.findByText('Não consigo abrir o relatório.')).toBeTruthy()
+    expect(screen.queryByRole('article', { name: 'Chamado aberto' })).toBeNull()
+    expect(screen.getByText('0 - 1 of 1')).toBeTruthy()
   })
 
   it('chama o patch ao trocar o status', async () => {

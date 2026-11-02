@@ -12,7 +12,6 @@ import { SupportFormModal } from '../../components/SupportFormModal/SupportFormM
 import { SupportTable } from '../../components/SupportTable/SupportTable.tsx'
 import { useAuth } from '../../contexts/AuthContext.tsx'
 import {
-  ehSuperAdmin,
   rotuloCategoria,
   rotuloStatus,
   type Chamado,
@@ -33,12 +32,10 @@ import './SupportScreen.css'
 
 export function SupportScreen() {
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
-  const superAdmin = ehSuperAdmin(user?.cargo)
+  const { logout } = useAuth()
   const [menuOpen, setMenuOpen] = useState(true)
   const [query, setQuery] = useState('')
   const [chamados, setChamados] = useState<Chamado[]>([])
-  const [criado, setCriado] = useState<Chamado | null>(null)
   const [modalMode, setModalMode] = useState<'create' | 'edit' | null>(null)
   const [editing, setEditing] = useState<Chamado | null>(null)
   const [pendingDelete, setPendingDelete] = useState<Chamado | null>(null)
@@ -52,7 +49,6 @@ export function SupportScreen() {
   }
 
   useEffect(() => {
-    if (!superAdmin) return
     async function load() {
       try {
         await loadChamados()
@@ -62,7 +58,7 @@ export function SupportScreen() {
       }
     }
     void load()
-  }, [superAdmin])
+  }, [])
 
   const visible = useMemo(() => {
     const term = query.trim().toLowerCase()
@@ -87,12 +83,8 @@ export function SupportScreen() {
       if (modalMode === 'edit' && editing) {
         replaceChamado(await editarChamado(editing.id, payload as ChamadoEdicao))
       } else {
-        const created = await abrirChamado(payload as ChamadoAbertura)
-        if (superAdmin) {
-          await loadChamados()
-        } else {
-          setCriado(created)
-        }
+        await abrirChamado(payload as ChamadoAbertura)
+        await loadChamados()
       }
       setModalMode(null)
       setEditing(null)
@@ -168,7 +160,7 @@ export function SupportScreen() {
         ) : null}
         <section className="support-screen__content">
           <div className="support-screen__toolbar">
-            {superAdmin ? <SearchField value={query} onChange={setQuery} label="Buscar chamado" /> : <span />}
+            <SearchField value={query} onChange={setQuery} label="Buscar chamado" />
             <AddButton
               label="Adicionar chamado"
               onClick={() => {
@@ -183,30 +175,17 @@ export function SupportScreen() {
               {pageError}
             </p>
           ) : null}
-          {superAdmin ? (
-            <>
-              <SupportTable
-                chamados={visible}
-                onDelete={setPendingDelete}
-                onEdit={(chamado) => {
-                  void openEdit(chamado)
-                }}
-                onStatusChange={(chamado, status) => {
-                  void handleStatus(chamado, status)
-                }}
-              />
-              <Pagination label={`0 - ${visible.length} of ${chamados.length}`} />
-            </>
-          ) : criado ? (
-            <article className="support-screen__created" aria-label="Chamado aberto">
-              <h2>Chamado aberto</h2>
-              <p>Categoria: {rotuloCategoria(criado.categoria)}</p>
-              <p>Descrição: {criado.descricao}</p>
-              <p>Status: {rotuloStatus(criado.status)}</p>
-              <p>Abertura: {criado.dataHoraAbertura}</p>
-              <p>Resposta: {criado.resposta ?? '--'}</p>
-            </article>
-          ) : null}
+          <SupportTable
+            chamados={visible}
+            onDelete={setPendingDelete}
+            onEdit={(chamado) => {
+              void openEdit(chamado)
+            }}
+            onStatusChange={(chamado, status) => {
+              void handleStatus(chamado, status)
+            }}
+          />
+          <Pagination label={`0 - ${visible.length} of ${chamados.length}`} />
           {menuOpen ? (
             <button
               type="button"
