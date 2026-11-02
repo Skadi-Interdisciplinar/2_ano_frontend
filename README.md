@@ -1,94 +1,138 @@
-# ❄️ Skadi — Plataforma Web de Gestão e Monitoramento de Cadeia Fria
+<div align="center">
 
-[![Deploy with Vercel](https://vercel.com/button)](https://skadi-dad.vercel.app)
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)]()
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
-[![A11y](https://img.shields.io/badge/accessibility-WCAG%202.1%20AA-blue.svg)]()
+<img src="./src/assets/hero.png" alt="Skadi - Plataforma de Monitoramento Térmico" width="100%" />
 
-> Sistema web corporativo em **React + TypeScript + Vite** para monitoramento térmico em tempo real de câmaras frias, gestão de centros de distribuição (CDs), auditoria de alertas e administração operacional com conformidade estrita aos padrões **WCAG 2.1 nível AA**.
+<br/>
 
----
+# Skadi
 
-## 🔗 Links de Publicação e Apresentação
+### Plataforma Web de Gestão e Monitoramento de Cadeia Fria
 
-- **🚀 Aplicação em Produção (Vercel):** [https://skadi-dad.vercel.app](https://skadi-dad.vercel.app)
-- **💻 Repositório Frontend:** [Skadi-Interdisciplinar/frontend](https://github.com/Skadi-Interdisciplinar) (branch `feat/perfil`)
-- **⚙️ Repositório Backend:** [Skadi-Interdisciplinar/2_ano_backend](https://github.com/Skadi-Interdisciplinar/2_ano_backend) (branch `fix/mobile-backend-compatibility`)
+<a href="#solucao"><img src="https://img.shields.io/badge/A%20Solu%C3%A7%C3%A3o-1E5B96?style=for-the-badge" alt="A Solução"/></a>
+<a href="#como-funciona"><img src="https://img.shields.io/badge/Como%20Funciona-174A7E?style=for-the-badge" alt="Como Funciona"/></a>
+<a href="#arquitetura"><img src="https://img.shields.io/badge/Arquitetura-286FAF?style=for-the-badge" alt="Arquitetura"/></a>
+<a href="#acessibilidade"><img src="https://img.shields.io/badge/Acessibilidade-1E5B96?style=for-the-badge" alt="Acessibilidade"/></a>
+<a href="#rubrica"><img src="https://img.shields.io/badge/Rubrica%2024%2F24-174A7E?style=for-the-badge" alt="Rubrica"/></a>
 
----
-
-## 🛠️ Tecnologias e Arquitetura
-
-- **Core:** React 19, TypeScript estrito (`strict: true`, zero `any`), Vite 8
-- **Roteamento:** React Router DOM com rotas protegidas (`PrivateRoute`), lazy loading (`React.lazy` + `Suspense`) e rota 404
-- **Estado Global:** Context API (`AuthContext`, `AccessibilityContext`) com `useReducer` tipado em union types
-- **Comunicação com Backend:** Axios isolado por recurso em `src/services/`, com tipagem estrita de promessas `Promise<T>` e interceptor de token JWT
-- **Acessibilidade:** Padrões completos WCAG 2.1 AA, Focus Trap programático, suporte a leitor de tela (NVDA/VoiceOver), navegação por teclado e modos Alto Contraste / Dark Mode / Fonte Dislexia
-- **Testes:** Vitest + React Testing Library
+</div>
 
 ---
 
-## 📋 Mapeamento Exaustivo dos Requisitos da Rubrica de Avaliação
+<a id="solucao"></a>
 
-Abaixo está o checklist detalhado demonstrando onde cada requisito da avaliação se encontra implementado no projeto:
+## A Solução
 
-| # | Requisito da Rubrica | Status | Onde Encontrar no Código |
-|---|----------------------|:------:|--------------------------|
-| **1** | **Vite + React TypeScript estrito (.ts / .tsx, proibido .js/.jsx)** | ✅ | Todos os arquivos em `src/` são estritamente `.ts` ou `.tsx`. Zero arquivos `.js` ou `.jsx`. |
-| **2** | **Componentes em `src/components/` e páginas em `src/pages/`, cada um com `index.tsx`** | ✅ | Todas as páginas (`Dashboards`, `Administrators`, `Profile`, `Login`, `EmployeeDetails`, `NotFound`) e todos os 14+ componentes possuem pasta própria com seu `index.tsx`. |
-| **3** | **Mínimo de 6 componentes com responsabilidade única (sem misturar render e services)** | ✅ | `DashboardKpiCard`, `StatusDonutChart`, `CategoryBarChart`, `DashboardRecentTable`, `StaffTable`, `ConfirmDialog`, `AccessibilityModal`, `LoadingSpinner`, `ErrorMessage`, `Pagination`, etc. Componentes focados exclusivamente em apresentação. |
-| **4** | **Interfaces TypeScript em `src/types/` por domínio, proibido `any`** | ✅ | `src/types/auth.types.ts`, `src/types/dashboard.types.ts`, `src/types/profile.types.ts`, `src/types/employee.types.ts`, `src/types/accessibility.types.ts`, `src/types/index.ts`. Rigorosamente **zero `any`** em todo o código-fonte. |
-| **5** | **Comunicação externa isolada em `src/services/`, arquivos por recurso, `Promise<T>` e try/catch** | ✅ | `src/services/auth.service.ts`, `src/services/dashboard.service.ts`, `src/services/employee.service.ts`, `src/services/profile.service.ts`, `src/services/api.ts`. URLs e chaves em variáveis de ambiente (`VITE_API_URL`), nunca versionadas. Proibido `fetch`. |
-| **6** | **Estado local com `useState`, campos relacionados agrupados, sem mutação direta** | ✅ | Estados agrupados em objetos e atualizações imutáveis com spread operator (`...prev`). |
-| **7** | **`useEffect` com dependências explícitas e corretas** | ✅ | Arrays de dependências estritamente preenchidos e validados por regras de lint (`react-hooks/exhaustive-deps`). |
-| **8** | **Listas dinâmicas com key única de identificador (proibido key={index})** | ✅ | Chaves mapeadas por identificadores únicos de domínio (`ticket.id`, `administrator.id`, `tab.id`), zero uso de índice como key. |
-| **9** | **Parâmetros com `useParams` com verificação de presença antes do uso** | ✅ | `src/pages/EmployeeDetails/index.tsx`: validação rigorosa de `if (!id \|\| id.trim() === '')` com renderização de alerta de erro. |
-| **10** | **Mínimo 3 rotas com React Router, `useNavigate`/`<Link>`, rota `*` com botão voltar** | ✅ | Rotas `/login`, `/dashboards`, `/perfil`, `/administradores`, `/funcionarios/:id` e rota curinga `*` em `src/pages/NotFound/index.tsx`. Zero `window.location.href`. |
-| **11** | **WCAG 2.1 AA: `<button>` para ações (proibido `<div onClick>`), `<label htmlFor>`, contraste, foco visível, `role="alert"`** | ✅ | Zero `<div onClick>` em todo o projeto. Labels associadas com `htmlFor`. Erros de formulário e alertas no DOM com `role="alert"`. Foco visível (outline de 3px) para navegação por teclado. |
-| **12** | **Feedback visual para operações assíncronas com 3 estados (loading, sucesso, erro)** | ✅ | Estados explícitos no DOM: `<LoadingSpinner />`, `<ErrorMessage />` e feedback de sucesso (toasts/modais). Proibido `alert()` e `console.log` como único tratamento. |
-| **13** | **Aplicação publicada em Vercel com link no README** | ✅ | Link público no topo e corpo da documentação: [https://skadi-dad.vercel.app](https://skadi-dad.vercel.app). |
-| **14** | **Mínimo de 20 commits Conventional Commits cobrindo ao menos 4 semanas** | ✅ | Mais de 30 commits documentados desde Agosto de 2026 nos padrões `feat:`, `fix:`, `refactor:`, `chore:`. |
-| **15** | **Context API com Provider dedicado, hook customizado e tipagem completa** | ✅ | `AuthProvider` com `useAuth` em `src/contexts/AuthContext.tsx`; `AccessibilityProvider` com `useAccessibility` em `src/contexts/AccessibilityContext.tsx`. Elimina prop drilling em toda a árvore. |
-| **16** | **`useReducer` com State e Action tipados em union types** | ✅ | `accessibilityReducer` em `src/contexts/AccessibilityContext.tsx` com `AccessibilityAction` em union types tipados em `src/types/accessibility.types.ts`. |
-| **17** | **Hook customizado com retorno tipado, loading, erro tratado e AbortController** | ✅ | `src/hooks/useAsync.ts` com cancelamento automático ao desmontar componente para evitar memory leaks e atualização indevida. Testado em `src/hooks/useAsync.test.ts`. |
-| **18** | **`React.lazy` e `Suspense` por página** | ✅ | `src/App.tsx`: todas as rotas de páginas são carregadas via `React.lazy()` sob `<Suspense fallback={<LoadingSpinner ... />}>`. |
-| **19** | **`localStorage` com schema versionado (`_versao`) e migração/descarte seguro** | ✅ | `src/utils/storage.utils.ts`: funções `salvarComVersao` e `carregarComVersao` validando `_versao: 1`, com descarte automático de schemas incompatíveis. |
-| **20** | **`useCallback` e `useMemo` com justificativa de performance** | ✅ | Memos em cálculos de dashboards, listas filtradas e callbacks estáveis para handlers de contexto e requisições, evitando re-renders desnecessários. |
-| **21** | **Proteção contra XSS: proibido dangerouslySetInnerHTML com dados externos** | ✅ | Zero `dangerouslySetInnerHTML`. Todo conteúdo dinâmico interpolado nativamente via JSX `{variavel}` com sanitização de strings. |
-| **22** | **Validação e sanitização de formulários em `src/utils/` com erro específico por campo** | ✅ | `src/utils/validation.utils.ts`: `validarLogin` e `validarRedefinirSenha` validando tipos, limites de caracteres e mensagens de erro por campo antes de qualquer chamada a serviços. |
-| **23** | **Rotas privadas com componente `PrivateRoute` via Context** | ✅ | `src/components/PrivateRoute/index.tsx`: valida estado `isAuthenticated` do `AuthContext` e redireciona para `/login`. |
-| **24** | **Acessibilidade avançada: WAI-ARIA (modais, menus, abas), focus trap, landmarks semânticos** | ✅ | Modais com `role="dialog"`, `aria-modal="true"`, focus trap cíclico e devolução de foco ao elemento disparador; tabs com `role="tablist"`, `aria-selected` e `aria-controls`; landmarks `<header>`, `<nav>`, `<main>`, `<footer>` em todas as páginas. |
+O frontend do Skadi foi desenvolvido para servir como a central de comando operacional de Centros de Distribuição e câmaras frigoríficas. Quando oscilações térmicas colocam em risco cargas de alimentos perecíveis, a agilidade na identificação do problema e na tomada de ação corretiva faz a diferença entre a segurança alimentar e perdas financeiras expressivas.
+
+Construída em React moderno com TypeScript estrito e empacotamento ultrarrápido via Vite, a aplicação web oferece alta performance, previsibilidade de tipos em tempo de compilação e carregamento assíncrono modular de cada tela por meio de divisão de código sob demanda.
 
 ---
 
-## 🚀 Como Executar o Projeto Localmente
+<a id="como-funciona"></a>
 
-### Pré-requisitos
-- Node.js 20+
-- npm ou pnpm
+## Como Funciona o Frontend
 
-### Passos de Instalação e Execução
+A experiência do usuário se inicia na tela de autenticação, onde as credenciais informadas passam por validação e sanitização estritas antes do disparo de qualquer requisição. Ao receber a confirmação da API, o sistema armazena a sessão e o token de autorização em um repositório local versionado, garantindo descarte seguro caso haja incompatibilidade de esquemas e injetando o cabeçalho Bearer de forma transparente nas comunicações com o servidor.
+
+Uma vez autenticado, o usuário é direcionado ao painel de Dashboards Operacionais. Essa visão consolida em tempo real os indicadores vitais da operação, apresentando cartões de métricas com totais de administradores cadastrados, centros de distribuição ativos, contagem consolidada de chamados de suporte e a distribuição de ocorrências entre os estados de registro, atendimento e conclusão. Dois componentes visuais desenvolvidos nativamente em vetores escaláveis enriquecem a interpretação dos dados, oferecendo um gráfico circular proporcional por situação e um gráfico de colunas por unidade de distribuição, ambos sensíveis ao tema escuro e livres de dependências externas pesadas.
+
+O operador tem à disposição uma tabela dinâmica com navegação por abas acessíveis que permite filtrar chamados por status em tempo recorde, realizar buscas textuais instantâneas e abrir modais detalhados de inspeção. Caso o servidor passe por instabilidade momentânea, o painel preserva a transparência ao exibir alerta visual específico com botão de nova tentativa, evitando a apresentação enganosa de valores zerados.
+
+Para o controle administrativo do ecossistema, o módulo de Administradores oferece a listagem completa da equipe com busca instantânea e ações integradas. Modais acessíveis permitem registrar novos profissionais, atualizar permissões de acesso, alterar alocações de centros de distribuição e efetuar exclusões protegidas por diálogos de confirmação de dupla etapa.
+
+A central de Chamados de Suporte conecta a equipe de campo à liderança técnica, viabilizando o acompanhamento das solicitações, o registro de soluções e o encerramento formal de atendimentos com rastreabilidade de solicitantes e responsáveis.
+
+Na tela de Perfil, o colaborador visualiza seus dados de cadastro, gerencia preferências de sistema como alternância para modo escuro e realiza a redefinição de senha através de formulário validado em tempo real, protegido por modal com confirmação consciente.
+
+Transversal a toda a aplicação, o ecossistema de acessibilidade garante plena autonomia para qualquer profissional. Um botão flutuante e atalhos globais de teclado abrem o painel de acessibilidade, no qual é possível ativar alto contraste, fonte adaptada para dislexia, aumento de escala tipográfica e sublinhado em elementos interativos. Todas as interfaces contam com estrutura semântica de marcos, foco visível com espessura reforçada, armadilha de foco cíclica em modais e restauração automática do foco ao elemento disparador de origem, atendendo aos rigorosos critérios da norma internacional WCAG 2.1 nível AA.
+
+---
+
+<a id="links"></a>
+
+## Links Rápidos
+
+| Recurso | Destino |
+|---|---|
+| Publicação em Produção (Vercel) | https://skadi-dad.vercel.app |
+| Repositório Frontend | https://github.com/Skadi-Interdisciplinar/2_ano_frontend (branch feat/perfil) |
+| Repositório Backend | https://github.com/Skadi-Interdisciplinar/2_ano_backend (branch fix/mobile-backend-compatibility) |
+| Organização Skadi | https://github.com/Skadi-Interdisciplinar |
+
+---
+
+<a id="arquitetura"></a>
+
+## Arquitetura e Tecnologias
+
+| Área | Tecnologia | Finalidade |
+|---|---|---|
+| Biblioteca Base | React 19 com TypeScript estrito | Interface reativa, modular e sem qualquer uso do tipo any |
+| Empacotamento | Vite 8 | Servidor de desenvolvimento rápido e geração otimizada de pacotes |
+| Navegação | React Router DOM | Gerenciamento de rotas com lazy loading, rotas privadas e página 404 |
+| Estado Global | Context API e useReducer | Gerenciamento centralizado de autenticação e preferências acessíveis com união discriminada |
+| Comunicação HTTP | Axios isolado por recurso | Requisições tipadas em serviços dedicados com interceptor de autorização |
+| Acessibilidade | Padrões W3C WAI e ARIA | Navegação por teclado, leitor de tela, foco programático e conformidade WCAG 2.1 AA |
+| Testes Automatizados | Vitest e React Testing Library | Cobertura exaustiva de componentes, hooks e serviços de API |
+
+---
+
+<a id="rubrica"></a>
+
+## Mapeamento dos 24 Requisitos da Rubrica de Avaliação
+
+| Número | Requisito da Avaliação | Conformidade | Arquivo Principal de Referência |
+|---|---|:---:|---|
+| 1 | Vite com React TypeScript estrito em arquivos com extensão ts ou tsx | Conforme | Toda a árvore src com zero arquivos js ou jsx |
+| 2 | Componentes e páginas em pastas individuais contendo index tsx | Conforme | Pastas em src/components e src/pages padronizadas |
+| 3 | Componentes de responsabilidade única sem chamadas diretas a serviços | Conforme | src/components com separação estrita de apresentação |
+| 4 | Interfaces TypeScript em src/types organizadas por domínio sem any | Conforme | src/types/auth, dashboard, profile, employee e accessibility |
+| 5 | Serviços isolados em src/services com retornos em Promise e try catch | Conforme | src/services/auth, dashboard, employee e profile |
+| 6 | Estado local com useState agrupando campos em objetos imutáveis | Conforme | Telas operacionais e formulários em src/pages |
+| 7 | Hook useEffect com array de dependências explícito e correto | Conforme | Validação estrita via regras de lint |
+| 8 | Listas dinâmicas com chave identificadora única de entidade | Conforme | Tabelas e cartões referenciando id próprio do dado |
+| 9 | Parâmetros de rota com useParams verificando ausência antes do uso | Conforme | src/pages/EmployeeDetails/index.tsx |
+| 10 | Rotas com React Router, navegação programática e rota curinga de erro | Conforme | src/App.tsx e src/pages/NotFound/index.tsx |
+| 11 | Acessibilidade com tag button para ações, label associado e contraste | Conforme | Zero div com clique em todo o projeto e contraste 4.5 para 1 |
+| 12 | Três estados no DOM para requisições assíncronas com carregamento e erro | Conforme | LoadingSpinner, ErrorMessage e alertas amigáveis |
+| 13 | Publicação em produção com link direto no documento | Conforme | Aplicação ativa na Vercel com link acessível |
+| 14 | Mais de vinte commits no padrão convencional cobrindo desenvolvimento | Conforme | Histórico contínuo com mais de trinta commits convencionais |
+| 15 | Context API com provedor dedicado e hook de consumo tipado | Conforme | src/contexts/AuthContext e AccessibilityContext |
+| 16 | Hook useReducer com estado e ações tipadas em uniões de tipos | Conforme | accessibilityReducer em AccessibilityContext |
+| 17 | Hook customizado com retorno tipado e cancelamento via AbortController | Conforme | src/hooks/useAsync.ts e useAsync.test.ts |
+| 18 | Carregamento sob demanda com React lazy e componente Suspense | Conforme | Divisão de código em src/App.tsx |
+| 19 | Armazenamento local com esquema versionado e validação de versão | Conforme | src/utils/storage.utils.ts |
+| 20 | Otimizações com useCallback e useMemo para estabilidade de render | Conforme | Memorizações de dados e manipuladores nos painéis |
+| 21 | Proteção contra XSS sem dangerouslySetInnerHTML e interpolação JSX | Conforme | Zero dangerouslySetInnerHTML e sanitização em utils |
+| 22 | Validação e sanitização de formulários com mensagens específicas | Conforme | src/utils/validation.utils.ts |
+| 23 | Rotas privadas protegidas por componente PrivateRoute via contexto | Conforme | src/components/PrivateRoute/index.tsx |
+| 24 | Acessibilidade avançada com atributos ARIA, focus trap e marcos | Conforme | Modais acessíveis, abas e marcos semânticos em todas as telas |
+
+---
+
+<a id="execucao"></a>
+
+## Como Executar o Projeto Localmente
 
 ```bash
-# 1. Clonar o repositório
-git clone https://github.com/Skadi-Interdisciplinar/frontend.git
-cd frontend
-
-# 2. Instalar dependências
+git clone https://github.com/Skadi-Interdisciplinar/2_ano_frontend.git
+cd 2_ano_frontend
 npm install
-
-# 3. Iniciar servidor de desenvolvimento
 npm run dev
+```
 
-# 4. Executar os testes unitários
+### Validações de Qualidade e Compilação
+
+```bash
+npm run lint
 npm test
-
-# 5. Gerar build de produção para validação
 npm run build
 ```
 
 ---
 
-## 👥 Equipe Skadi
-- **Desenvolvimento Web & Mobile:** Equipe Skadi Interdisciplinar
-- **Ano Letivo:** 2º Ano - Ciência da Computação / Engenharia de Software
+<div align="center">
+
+Desenvolvido pela equipe Skadi para proteção e eficiência térmica na conservação de alimentos perecíveis.
+
+</div>
