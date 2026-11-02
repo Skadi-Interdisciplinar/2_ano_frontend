@@ -86,7 +86,7 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     try {
       // Faz requisição estrita para a API
       const response = await postLogin(credentials)
-      const sessionUser = usuarioDaSessao(response.token, credentials.usuario)
+      const sessionUser = usuarioDaSessao(response.token, credentials.username)
       setUser(sessionUser)
       setIsAuthenticated(true)
 

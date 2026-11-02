@@ -8,8 +8,8 @@ describe('validation.utils', () => {
 
   it('valida credenciais corretas com sucesso', () => {
     const result = validarLogin({
-      usuario: 'Bia.hins',
-      senha: 'Bia.123',
+      username: 'Bia.hins',
+      password: 'Bia.123',
     })
     expect(result.isValid).toBe(true)
     expect(result.errors).toEqual({})
@@ -17,19 +17,19 @@ describe('validation.utils', () => {
 
   it('rejeita usuário vazio ou menor que 3 caracteres', () => {
     const result = validarLogin({
-      usuario: 'ab',
-      senha: '123456',
+      username: 'ab',
+      password: '123456',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.usuario).toBe('O usuário deve ter no mínimo 3 caracteres.')
+    expect(result.errors.username).toBe('O usuário deve ter no mínimo 3 caracteres.')
   })
 
   it('rejeita senha vazia ou menor que 4 caracteres', () => {
     const result = validarLogin({
-      usuario: 'Bia.hins',
-      senha: '12',
+      username: 'Bia.hins',
+      password: '12',
     })
     expect(result.isValid).toBe(false)
-    expect(result.errors.senha).toBe('A senha deve conter no mínimo 4 caracteres.')
+    expect(result.errors.password).toBe('A senha deve conter no mínimo 4 caracteres.')
   })
 })

@@ -1,6 +1,6 @@
 export interface ILoginCredentials {
-  usuario: string
-  senha: string
+  username: string
+  password: string
   lembreMe?: boolean
 }
 
