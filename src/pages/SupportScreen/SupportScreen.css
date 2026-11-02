@@ -1,0 +1,95 @@
+.support-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  background: #ffffff;
+}
+
+.support-screen__header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 78px;
+  padding: 0 30px;
+  background: #0f2e4f;
+}
+
+.support-screen__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+.support-screen__content {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 17px 56px 28px 16px;
+  background: #ffffff;
+  box-shadow: 0 0 9px rgba(0, 0, 0, 0.25);
+}
+
+.support-screen__toolbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.support-screen__error {
+  position: relative;
+  z-index: 1;
+  margin: 16px 0 0;
+  color: #e63946;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+}
+
+.support-screen__content .support-table {
+  position: relative;
+  z-index: 1;
+  margin-top: 27px;
+}
+
+.support-screen__content .pagination {
+  position: relative;
+  z-index: 1;
+}
+
+.support-screen__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border: 0;
+  background: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+}
+
+.support-screen__created {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  max-width: 720px;
+  margin-top: 28px;
+  padding: 24px;
+  border: 1px solid #ececec;
+  border-radius: 16px;
+  color: #111111;
+  font-family: Inter, sans-serif;
+}
+
+.support-screen__created h2 {
+  margin: 0 0 8px;
+  color: #0f2e4f;
+  font-size: 22px;
+}
+
+.support-screen__created p {
+  margin: 0;
+}

@@ -86,6 +86,8 @@ export function ProfileScreen() {
   const handleNavigate = (section: string) => {
     if (section === 'administradores') {
       navigate('/administradores')
+    } else if (section === 'chamados') {
+      navigate('/chamados')
     } else if (section === 'perfil') {
       setCurrentView('perfil')
     }
