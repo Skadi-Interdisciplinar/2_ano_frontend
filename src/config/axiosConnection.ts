@@ -1,10 +1,12 @@
 import axios from 'axios'
 import { carregarComVersao } from '../utils/storage.utils.ts'
 
-const baseURL: string =
-  (import.meta.env.VITE_API_URL as string | undefined) ??
-  (import.meta.env.API_URL as string | undefined) ??
-  "/api"
+const configured =
+  (import.meta.env.VITE_API_URL as string | undefined) ||
+  (import.meta.env.API_URL as string | undefined) ||
+  ""
+
+const baseURL = configured.trim() || "/api"
 
 const api = axios.create({
   baseURL,
