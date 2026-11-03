@@ -67,7 +67,8 @@ function sessaoSalva(): { token: string; user: IAuthUser } | null {
   return token && user ? { token, user } : null
 }
 
-const AuthContext = createContext<IAuthContext | null>(null)
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext<IAuthContext | null>(null)
 
 export interface IAuthProviderProps {
   children: ReactNode

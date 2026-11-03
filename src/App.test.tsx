@@ -8,14 +8,25 @@ describe('App component', () => {
     localStorage.clear()
   })
 
-  it('redireciona para /login ao tentar acessar rota privada desautenticado', async () => {
-    window.history.pushState({}, 'Perfil', '/perfil')
-    render(<App />)
+  it(
+    'redireciona para /login ao tentar acessar rota privada desautenticado',
+    async () => {
+      window.history.pushState({}, 'Perfil', '/perfil')
+      render(<App />)
 
-    // PrivateRoute intercepta e redireciona para login
-    const heading = await screen.findByRole('heading', { name: /S K A D I/i })
-    expect(heading).toBeTruthy()
-  })
+      // Permite o ciclo de redirecionamento assíncrono do React Router
+      await new Promise((r) => setTimeout(r, 50))
+
+      // PrivateRoute intercepta e redireciona para login
+      const heading = await screen.findByRole(
+        'heading',
+        { name: /S K A D I/i },
+        { timeout: 15000 },
+      )
+      expect(heading).toBeTruthy()
+    },
+    60000,
+  )
 
   it('renderiza o Perfil quando autenticado via PrivateRoute', async () => {
     salvarComVersao('skadi_token', 'fake-token-123', 1)

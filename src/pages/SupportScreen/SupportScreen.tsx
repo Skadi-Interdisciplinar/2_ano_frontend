@@ -154,7 +154,7 @@ export function SupportScreen() {
             onNavigate={(section) => {
               if (section === 'administradores') navigate('/administradores')
               if (section === 'perfil') navigate('/perfil')
-              if (section === 'dashboards') navigate('/home')
+              if (section === 'dashboards') navigate('/dashboards')
             }}
           />
         ) : null}
