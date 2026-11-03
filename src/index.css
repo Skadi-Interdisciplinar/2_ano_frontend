@@ -68,21 +68,26 @@ html.dark-mode body {
    Classes Globais de Acessibilidade (Ativadas pelo AccessibilityContext)
    ========================================================================== */
 
-/* 1. Alto Contraste */
-html.a11y-high-contrast {
+/* 1. Alto Contraste (compatível com a11y-high-contrast e modo-alto-contraste) */
+html.a11y-high-contrast,
+html.modo-alto-contraste,
+body.modo-alto-contraste {
   filter: contrast(1.4);
 }
 
-html.a11y-high-contrast body {
+html.a11y-high-contrast body,
+body.modo-alto-contraste {
   background-color: #000000 !important;
   color: #ffffff !important;
 }
 
-html.a11y-high-contrast .login-page-container {
+html.a11y-high-contrast .login-page-container,
+body.modo-alto-contraste .login-page-container {
   background: #000000 !important;
 }
 
-html.a11y-high-contrast .login-card {
+html.a11y-high-contrast .login-card,
+body.modo-alto-contraste .login-card {
   background-color: #000000 !important;
   border: 3px solid #ffff00 !important;
   color: #ffffff !important;
@@ -92,29 +97,41 @@ html.a11y-high-contrast .login-brand-title,
 html.a11y-high-contrast .login-brand-subtitle,
 html.a11y-high-contrast .login-label,
 html.a11y-high-contrast .login-remember-label span,
-html.a11y-high-contrast .login-forgot-link {
+html.a11y-high-contrast .login-forgot-link,
+body.modo-alto-contraste .login-brand-title,
+body.modo-alto-contraste .login-brand-subtitle,
+body.modo-alto-contraste .login-label,
+body.modo-alto-contraste .login-remember-label span,
+body.modo-alto-contraste .login-forgot-link {
   color: #ffff00 !important;
 }
 
-html.a11y-high-contrast .login-input {
+html.a11y-high-contrast .login-input,
+body.modo-alto-contraste .login-input {
   background-color: #000000 !important;
   color: #ffffff !important;
   border: 2px solid #ffff00 !important;
 }
 
-html.a11y-high-contrast .login-submit-btn {
+html.a11y-high-contrast .login-submit-btn,
+body.modo-alto-contraste .login-submit-btn {
   background-color: #ffff00 !important;
   color: #000000 !important;
   font-weight: 900 !important;
 }
 
 /* 2. Texto Grande */
-html.a11y-large-text {
+html.a11y-large-text,
+html.modo-texto-grande,
+body.modo-texto-grande {
   font-size: 125% !important;
 }
 
 /* 3. Fonte para Dislexia */
-html.a11y-dyslexic-font * {
+html.a11y-dyslexic-font *,
+html.modo-dislexia *,
+body.modo-dislexia,
+body.modo-dislexia * {
   font-family: 'OpenDyslexic', 'Verdana', 'Comic Sans MS', sans-serif !important;
   letter-spacing: 0.04em !important;
   word-spacing: 0.1em !important;
@@ -124,7 +141,10 @@ html.a11y-dyslexic-font * {
 /* 4. Sublinhar Links */
 html.a11y-underline-links a,
 html.a11y-underline-links button[class*="link"],
-html.a11y-underline-links .login-forgot-link {
+html.a11y-underline-links .login-forgot-link,
+body.modo-sublinhar a,
+body.modo-sublinhar button[class*="link"],
+body.modo-sublinhar .login-forgot-link {
   text-decoration: underline 2px !important;
   text-underline-offset: 4px !important;
 }

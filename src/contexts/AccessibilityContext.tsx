@@ -69,16 +69,35 @@ export function AccessibilityProvider({ children }: IAccessibilityProviderProps)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // Persiste sempre que houver alteração usando schema versionado (_versao)
+  // Persiste sempre que houver alteração usando schema versionado (_versao) e chaves padrão a11y
   useEffect(() => {
     salvarComVersao(STORAGE_KEY, preferences, SCHEMA_VERSAO)
 
-    // Aplica classes de acessibilidade globalmente no root do DOM
+    // Persistência compatível com padrão a11y do repositório de referência
+    localStorage.setItem('a11y_contraste', String(preferences.altoContraste))
+    localStorage.setItem('a11y_texto', String(preferences.textoGrande))
+    localStorage.setItem('a11y_dislexia', String(preferences.fonteDislexia))
+    localStorage.setItem('a11y_links', String(preferences.sublinharLinks))
+
+    // Aplica classes de acessibilidade globalmente no DOM (documentElement e body)
     const root = document.documentElement
+    const body = document.body
+
     root.classList.toggle('a11y-high-contrast', preferences.altoContraste)
+    root.classList.toggle('modo-alto-contraste', preferences.altoContraste)
+    body.classList.toggle('modo-alto-contraste', preferences.altoContraste)
+
     root.classList.toggle('a11y-large-text', preferences.textoGrande)
+    root.classList.toggle('modo-texto-grande', preferences.textoGrande)
+    body.classList.toggle('modo-texto-grande', preferences.textoGrande)
+
     root.classList.toggle('a11y-dyslexic-font', preferences.fonteDislexia)
+    root.classList.toggle('modo-dislexia', preferences.fonteDislexia)
+    body.classList.toggle('modo-dislexia', preferences.fonteDislexia)
+
     root.classList.toggle('a11y-underline-links', preferences.sublinharLinks)
+    root.classList.toggle('modo-sublinhar', preferences.sublinharLinks)
+    body.classList.toggle('modo-sublinhar', preferences.sublinharLinks)
   }, [preferences])
 
   const abrirModal = useCallback(() => setIsModalOpen(true), [])

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import type { Administrator, AdministratorInput, AdministratorUpdate } from '../../data/administrators.ts'
 import type { Cd } from '../../data/distributionCenter.ts'
@@ -20,10 +20,12 @@ import {
   mensagemDaApi,
   updateAdministrador,
 } from '../../service/employees.ts'
+import { AuthContext } from '../../contexts/AuthContext.tsx'
 import './AdministratorsScreen.css'
 
 export function AdministratorsScreen() {
   const navigate = useNavigate()
+  const auth = useContext(AuthContext)
   const [menuOpen, setMenuOpen] = useState(true)
   const [query, setQuery] = useState('')
   const [administrators, setAdministrators] = useState<Administrator[]>([])
@@ -127,10 +129,14 @@ export function AdministratorsScreen() {
         {menuOpen ? (
           <SideNav
             currentSection="administradores"
+            onLogout={() => {
+              auth?.logout()
+              navigate('/login')
+            }}
             onNavigate={(section) => {
               if (section === 'chamados') navigate('/chamados')
               if (section === 'perfil') navigate('/perfil')
-              if (section === 'dashboards') navigate('/home')
+              if (section === 'dashboards') navigate('/dashboards')
             }}
           />
         ) : null}

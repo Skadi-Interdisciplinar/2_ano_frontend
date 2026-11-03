@@ -61,17 +61,32 @@ export function SideNav({
       >
         CHAMADOS
       </button>
-      <button type="button" className="side-nav__logout" onClick={onLogout}>
-        Sair
-      </button>
       <button
         type="button"
-        className={`side-nav__profile-btn ${currentSection === 'perfil' ? 'side-nav__profile-btn--current' : ''}`}
+        className={`side-nav__link ${currentSection === 'perfil' ? 'side-nav__link--current' : ''}`}
+        aria-current={currentSection === 'perfil' ? 'page' : undefined}
         onClick={() => onNavigate?.('perfil')}
-        aria-label="Meu Perfil"
       >
-        <img className="side-nav__profile" src={profile} alt="" width={69} height={69} />
+        PERFIL
       </button>
+      <div className="side-nav__bottom">
+        <button
+          type="button"
+          className="side-nav__logout"
+          onClick={onLogout}
+        >
+          Sair
+        </button>
+        <button
+          type="button"
+          className={`side-nav__profile-btn ${currentSection === 'perfil' ? 'side-nav__profile-btn--current' : ''}`}
+          onClick={() => onNavigate?.('perfil')}
+          aria-label="Meu Perfil"
+          title="Meu Perfil"
+        >
+          <img className="side-nav__profile" src={profile} alt="Avatar do perfil" width={69} height={69} />
+        </button>
+      </div>
     </nav>
   )
 }

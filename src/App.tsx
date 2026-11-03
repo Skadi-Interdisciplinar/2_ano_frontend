@@ -50,8 +50,8 @@ export default function App() {
             }
           >
             <Routes>
-              {/* Redirecionamento da raiz */}
-              <Route path="/" element={<Navigate to="/dashboards" replace />} />
+              {/* Redirecionamento da raiz para login */}
+              <Route path="/" element={<Navigate to="/login" replace />} />
 
               {/* Rotas Públicas */}
               <Route path="/login" element={<Login />} />

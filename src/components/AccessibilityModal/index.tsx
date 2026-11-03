@@ -1,12 +1,4 @@
 import { useCallback, useEffect, useRef } from 'react'
-import {
-  Contrast as ContrastIcon,
-  FormatSize as FormatSizeIcon,
-  Spellcheck as SpellcheckIcon,
-  Visibility as VisibilityIcon,
-  RestartAlt as RestartAltIcon,
-  Close as CloseIcon,
-} from '@mui/icons-material'
 import { useAccessibility } from '../../contexts/AccessibilityContext.tsx'
 import './styles.css'
 
@@ -107,7 +99,7 @@ export function AccessibilityModal({ onClose }: IAccessibilityModalProps) {
         aria-labelledby="a11y-modal-title"
         aria-describedby="a11y-modal-desc"
       >
-        <header className="a11y-modal-header">
+        <header className="a11y-modal-header modal-header">
           <h2 id="a11y-modal-title" className="a11y-modal-title">
             Acessibilidade
           </h2>
@@ -116,128 +108,113 @@ export function AccessibilityModal({ onClose }: IAccessibilityModalProps) {
           </p>
           <button
             type="button"
+            id="btn-fechar-a11y"
             className="a11y-modal-close-btn"
             onClick={handleClose}
             aria-label="Fechar modal de acessibilidade"
           >
-            <CloseIcon fontSize="small" />
+            ✕
           </button>
         </header>
 
-        <main className="a11y-modal-body">
+        <main className="a11y-modal-body modal-body">
           {/* 1. Alto Contraste */}
-          <div className="a11y-modal-item">
-            <div className="a11y-item-info">
-              <div className="a11y-item-icon-wrapper" aria-hidden="true">
-                <ContrastIcon />
-              </div>
-              <div className="a11y-item-text">
-                <label htmlFor="toggle-alto-contraste" className="a11y-item-title">
-                  Alto contraste
-                </label>
-                <span className="a11y-item-desc">Cores fortes para melhor leitura</span>
-              </div>
+          <div className="a11y-modal-item a11y-item">
+            <div className="a11y-item-info a11y-info">
+              <label htmlFor="toggle-contraste" className="a11y-item-title">
+                <strong>Alto contraste</strong>
+              </label>
+              <span className="a11y-item-desc">Cores fortes para melhor leitura</span>
             </div>
-            <label className="a11y-switch" htmlFor="toggle-alto-contraste">
+            <label className="a11y-switch switch" htmlFor="toggle-contraste">
               <input
-                id="toggle-alto-contraste"
+                id="toggle-contraste"
                 type="checkbox"
                 role="switch"
+                aria-label="Alto contraste"
                 aria-checked={preferences.altoContraste}
                 checked={preferences.altoContraste}
                 onChange={alternarAltoContraste}
               />
-              <span className="a11y-slider" />
+              <span className="a11y-slider slider" />
             </label>
           </div>
 
           {/* 2. Texto Grande */}
-          <div className="a11y-modal-item">
-            <div className="a11y-item-info">
-              <div className="a11y-item-icon-wrapper" aria-hidden="true">
-                <FormatSizeIcon />
-              </div>
-              <div className="a11y-item-text">
-                <label htmlFor="toggle-texto-grande" className="a11y-item-title">
-                  Texto grande
-                </label>
-                <span className="a11y-item-desc">Aumenta o tamanho da fonte</span>
-              </div>
+          <div className="a11y-modal-item a11y-item">
+            <div className="a11y-item-info a11y-info">
+              <label htmlFor="toggle-texto" className="a11y-item-title">
+                <strong>Texto grande</strong>
+              </label>
+              <span className="a11y-item-desc">Aumenta o tamanho da fonte</span>
             </div>
-            <label className="a11y-switch" htmlFor="toggle-texto-grande">
+            <label className="a11y-switch switch" htmlFor="toggle-texto">
               <input
-                id="toggle-texto-grande"
+                id="toggle-texto"
                 type="checkbox"
                 role="switch"
+                aria-label="Texto grande"
                 aria-checked={preferences.textoGrande}
                 checked={preferences.textoGrande}
                 onChange={alternarTextoGrande}
               />
-              <span className="a11y-slider" />
+              <span className="a11y-slider slider" />
             </label>
           </div>
 
           {/* 3. Fonte para Dislexia */}
-          <div className="a11y-modal-item">
-            <div className="a11y-item-info">
-              <div className="a11y-item-icon-wrapper" aria-hidden="true">
-                <SpellcheckIcon />
-              </div>
-              <div className="a11y-item-text">
-                <label htmlFor="toggle-fonte-dislexia" className="a11y-item-title">
-                  Fonte para dislexia
-                </label>
-                <span className="a11y-item-desc">Mais fácil de ler</span>
-              </div>
+          <div className="a11y-modal-item a11y-item">
+            <div className="a11y-item-info a11y-info">
+              <label htmlFor="toggle-dislexia" className="a11y-item-title">
+                <strong>Fonte para dislexia</strong>
+              </label>
+              <span className="a11y-item-desc">Mais fácil de ler</span>
             </div>
-            <label className="a11y-switch" htmlFor="toggle-fonte-dislexia">
+            <label className="a11y-switch switch" htmlFor="toggle-dislexia">
               <input
-                id="toggle-fonte-dislexia"
+                id="toggle-dislexia"
                 type="checkbox"
                 role="switch"
+                aria-label="Fonte para dislexia"
                 aria-checked={preferences.fonteDislexia}
                 checked={preferences.fonteDislexia}
                 onChange={alternarFonteDislexia}
               />
-              <span className="a11y-slider" />
+              <span className="a11y-slider slider" />
             </label>
           </div>
 
           {/* 4. Sublinhar Links */}
-          <div className="a11y-modal-item">
-            <div className="a11y-item-info">
-              <div className="a11y-item-icon-wrapper" aria-hidden="true">
-                <VisibilityIcon />
-              </div>
-              <div className="a11y-item-text">
-                <label htmlFor="toggle-sublinhar-links" className="a11y-item-title">
-                  Sublinhar links
-                </label>
-                <span className="a11y-item-desc">Destaca todos os links</span>
-              </div>
+          <div className="a11y-modal-item a11y-item">
+            <div className="a11y-item-info a11y-info">
+              <label htmlFor="toggle-links" className="a11y-item-title">
+                <strong>Sublinhar links</strong>
+              </label>
+              <span className="a11y-item-desc">Destaca todos os links</span>
             </div>
-            <label className="a11y-switch" htmlFor="toggle-sublinhar-links">
+            <label className="a11y-switch switch" htmlFor="toggle-links">
               <input
-                id="toggle-sublinhar-links"
+                id="toggle-links"
                 type="checkbox"
                 role="switch"
+                aria-label="Sublinhar links"
                 aria-checked={preferences.sublinharLinks}
                 checked={preferences.sublinharLinks}
                 onChange={alternarSublinharLinks}
               />
-              <span className="a11y-slider" />
+              <span className="a11y-slider slider" />
             </label>
           </div>
         </main>
 
-        <footer className="a11y-modal-footer">
+        <footer className="a11y-modal-footer modal-footer">
           <button
             type="button"
-            className="a11y-reset-btn"
+            id="btn-restaurar"
+            className="a11y-reset-btn btn-restaurar"
             onClick={restaurarPadrao}
             aria-label="Restaurar configurações padrão de acessibilidade"
           >
-            <RestartAltIcon />
             Restaurar padrão
           </button>
         </footer>
