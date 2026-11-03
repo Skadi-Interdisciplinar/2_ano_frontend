@@ -69,55 +69,216 @@ html.dark-mode body {
    ========================================================================== */
 
 /* 1. Alto Contraste (compatível com a11y-high-contrast e modo-alto-contraste) */
-html.a11y-high-contrast,
-html.modo-alto-contraste,
-body.modo-alto-contraste {
-  filter: contrast(1.4);
-}
-
 html.a11y-high-contrast body,
+html.modo-alto-contraste body,
 body.modo-alto-contraste {
   background-color: #000000 !important;
   color: #ffffff !important;
 }
 
-html.a11y-high-contrast .login-page-container,
-body.modo-alto-contraste .login-page-container {
-  background: #000000 !important;
+/* Header & Barra Superior */
+html.a11y-high-contrast header,
+body.modo-alto-contraste header,
+html.a11y-high-contrast .dashboard-page__header,
+body.modo-alto-contraste .dashboard-page__header,
+html.a11y-high-contrast .administrators-screen__header,
+body.modo-alto-contraste .administrators-screen__header,
+html.a11y-high-contrast .support-screen__header,
+body.modo-alto-contraste .support-screen__header,
+html.a11y-high-contrast .profile-screen__header,
+body.modo-alto-contraste .profile-screen__header {
+  background-color: #000000 !important;
+  border-bottom: 2px solid #ffff00 !important;
+  color: #ffffff !important;
 }
 
+/* Páginas & Layout */
+html.a11y-high-contrast .dashboard-page,
+body.modo-alto-contraste .dashboard-page,
+html.a11y-high-contrast .administrators-screen,
+body.modo-alto-contraste .administrators-screen,
+html.a11y-high-contrast .support-screen,
+body.modo-alto-contraste .support-screen,
+html.a11y-high-contrast .profile-screen,
+body.modo-alto-contraste .profile-screen,
+html.a11y-high-contrast .administrators-screen__content,
+body.modo-alto-contraste .administrators-screen__content,
+html.a11y-high-contrast .support-screen__content,
+body.modo-alto-contraste .support-screen__content,
+html.a11y-high-contrast .profile-screen__content,
+body.modo-alto-contraste .profile-screen__content {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Cartões & Painéis */
+html.a11y-high-contrast .dashboard-kpi-card,
+body.modo-alto-contraste .dashboard-kpi-card,
+html.a11y-high-contrast .profile-card,
+body.modo-alto-contraste .profile-card,
+html.a11y-high-contrast .status-donut-chart,
+body.modo-alto-contraste .status-donut-chart,
+html.a11y-high-contrast .category-bar-chart,
+body.modo-alto-contraste .category-bar-chart,
+html.a11y-high-contrast .dashboard-recent-table,
+body.modo-alto-contraste .dashboard-recent-table,
 html.a11y-high-contrast .login-card,
 body.modo-alto-contraste .login-card {
-  background-color: #000000 !important;
-  border: 3px solid #ffff00 !important;
+  background-color: #0a0a0a !important;
+  border: 2px solid #ffff00 !important;
   color: #ffffff !important;
+  box-shadow: none !important;
 }
 
+/* Títulos, Labels e Destaques em Amarelo Alto Contraste */
+html.a11y-high-contrast h1,
+html.a11y-high-contrast h2,
+html.a11y-high-contrast h3,
+body.modo-alto-contraste h1,
+body.modo-alto-contraste h2,
+body.modo-alto-contraste h3,
+html.a11y-high-contrast .dashboard-page__main-title,
+body.modo-alto-contraste .dashboard-page__main-title,
+html.a11y-high-contrast .dashboard-kpi-card__value,
+body.modo-alto-contraste .dashboard-kpi-card__value,
 html.a11y-high-contrast .login-brand-title,
-html.a11y-high-contrast .login-brand-subtitle,
-html.a11y-high-contrast .login-label,
-html.a11y-high-contrast .login-remember-label span,
-html.a11y-high-contrast .login-forgot-link,
 body.modo-alto-contraste .login-brand-title,
+html.a11y-high-contrast .login-brand-subtitle,
 body.modo-alto-contraste .login-brand-subtitle,
+html.a11y-high-contrast .login-label,
 body.modo-alto-contraste .login-label,
+html.a11y-high-contrast .login-remember-label span,
 body.modo-alto-contraste .login-remember-label span,
+html.a11y-high-contrast .login-forgot-link,
 body.modo-alto-contraste .login-forgot-link {
   color: #ffff00 !important;
 }
 
-html.a11y-high-contrast .login-input,
-body.modo-alto-contraste .login-input {
+/* Inputs, Textareas e Selects */
+html.a11y-high-contrast input,
+html.a11y-high-contrast textarea,
+html.a11y-high-contrast select,
+body.modo-alto-contraste input,
+body.modo-alto-contraste textarea,
+body.modo-alto-contraste select {
+  background-color: #111111 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffff00 !important;
+}
+
+/* Tabelas */
+html.a11y-high-contrast table,
+body.modo-alto-contraste table,
+html.a11y-high-contrast .staff-table,
+body.modo-alto-contraste .staff-table,
+html.a11y-high-contrast .support-table,
+body.modo-alto-contraste .support-table {
   background-color: #000000 !important;
   color: #ffffff !important;
   border: 2px solid #ffff00 !important;
 }
 
-html.a11y-high-contrast .login-submit-btn,
-body.modo-alto-contraste .login-submit-btn {
+html.a11y-high-contrast th,
+body.modo-alto-contraste th {
+  background-color: #1a1a1a !important;
+  color: #ffff00 !important;
+  border-bottom: 2px solid #ffff00 !important;
+}
+
+html.a11y-high-contrast td,
+body.modo-alto-contraste td {
+  border-bottom: 1px solid #444444 !important;
+  color: #ffffff !important;
+}
+
+/* Menu Lateral (SideNav) */
+html.a11y-high-contrast .side-nav,
+body.modo-alto-contraste .side-nav {
+  background-color: #000000 !important;
+  border-right: 2px solid #ffff00 !important;
+}
+
+html.a11y-high-contrast .side-nav__link,
+body.modo-alto-contraste .side-nav__link {
+  color: #ffffff !important;
+}
+
+html.a11y-high-contrast .side-nav__link--current,
+body.modo-alto-contraste .side-nav__link--current {
   background-color: #ffff00 !important;
   color: #000000 !important;
   font-weight: 900 !important;
+}
+
+html.a11y-high-contrast .side-nav__logout,
+body.modo-alto-contraste .side-nav__logout {
+  color: #ff5555 !important;
+  border: 1px solid #ff5555 !important;
+}
+
+/* Botões Primários */
+html.a11y-high-contrast .login-submit-btn,
+body.modo-alto-contraste .login-submit-btn,
+html.a11y-high-contrast .add-button,
+body.modo-alto-contraste .add-button,
+html.a11y-high-contrast .dashboard-page__btn-refresh,
+body.modo-alto-contraste .dashboard-page__btn-refresh {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  font-weight: 900 !important;
+  border: 2px solid #ffffff !important;
+}
+
+/* Modal de Acessibilidade no Alto Contraste */
+html.a11y-high-contrast .a11y-modal-card,
+body.modo-alto-contraste .a11y-modal-card {
+  background-color: #000000 !important;
+  border: 3px solid #ffff00 !important;
+}
+
+html.a11y-high-contrast .modal-header,
+html.a11y-high-contrast .a11y-modal-header,
+body.modo-alto-contraste .modal-header,
+body.modo-alto-contraste .a11y-modal-header {
+  background-color: #000000 !important;
+  border-bottom: 2px solid #ffff00 !important;
+  color: #ffff00 !important;
+}
+
+html.a11y-high-contrast .modal-header h2,
+html.a11y-high-contrast .modal-header h3,
+html.a11y-high-contrast .a11y-modal-title,
+html.a11y-high-contrast .a11y-modal-close-btn,
+body.modo-alto-contraste .modal-header h2,
+body.modo-alto-contraste .modal-header h3,
+body.modo-alto-contraste .a11y-modal-title,
+body.modo-alto-contraste .a11y-modal-close-btn {
+  color: #ffff00 !important;
+}
+
+html.a11y-high-contrast .a11y-item,
+body.modo-alto-contraste .a11y-item {
+  background-color: #111111 !important;
+  border: 1px solid #ffff00 !important;
+}
+
+html.a11y-high-contrast .a11y-info strong,
+body.modo-alto-contraste .a11y-info strong {
+  color: #ffff00 !important;
+}
+
+html.a11y-high-contrast .a11y-info span,
+body.modo-alto-contraste .a11y-info span {
+  color: #ffffff !important;
+}
+
+html.a11y-high-contrast .btn-restaurar,
+html.a11y-high-contrast .a11y-reset-btn,
+body.modo-alto-contraste .btn-restaurar,
+body.modo-alto-contraste .a11y-reset-btn {
+  background-color: #ffff00 !important;
+  color: #000000 !important;
+  border: 2px solid #ffffff !important;
 }
 
 /* 2. Texto Grande */

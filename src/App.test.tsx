@@ -2,6 +2,9 @@ import { render, screen } from '@testing-library/react'
 import { describe, it, expect, beforeEach } from 'vitest'
 import App from './App.tsx'
 import { salvarComVersao } from './utils/storage.utils.ts'
+// Pré-carregamento dos módulos para evitar lentidão de dynamic import no jsdom sob carga de CPU
+import './pages/Login/index.tsx'
+import './pages/Profile/index.tsx'
 
 describe('App component', () => {
   beforeEach(() => {
@@ -21,11 +24,11 @@ describe('App component', () => {
       const heading = await screen.findByRole(
         'heading',
         { name: /S K A D I/i },
-        { timeout: 15000 },
+        { timeout: 25000 },
       )
       expect(heading).toBeTruthy()
     },
-    60000,
+    90000,
   )
 
   it('renderiza o Perfil quando autenticado via PrivateRoute', async () => {

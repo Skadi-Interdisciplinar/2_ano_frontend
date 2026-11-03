@@ -63,6 +63,10 @@
   color: #ef4444;
   font-size: 16px;
   font-weight: 700;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   transition: background-color 0.15s ease, color 0.15s ease;
 }
